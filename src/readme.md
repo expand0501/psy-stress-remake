@@ -1,4 +1,4 @@
-**Psy Stress Remake by Expand 0.8.3**
+**Psy Stress Remake by Expand 0.8.4**
 
 Psy Stress remake for G.A.M.M.A. by Expand, based on Psy Stress / Stressfull Zone 1.06.04 by livvan
 (https://www.moddb.com/mods/stalker-anomaly/addons/psy-stress). Single version for S.T.A.L.K.E.R. Anomaly G.A.M.M.A.
@@ -42,6 +42,7 @@ Two drop-down lists at the top of MCM > Psy Stress Remake > General Configuratio
 - 0.8.1: review fixes - slow environment checks every 0.5 s (faster reaction); realistic phantoms only when their squads can be tracked (needs Maybelline's Restore XCV phantoms), otherwise classic; 3-second grace period before an offline phantom squad is released (new squads were at risk of vanishing before appearing); xcvb takeover re-applied on every load; get_psy_health safe if another mod calls it before the save is loaded; per-camp debug text only built in debug mode; consistent campfire fallback value.
 - 0.8.2: fixed psy attacks (controllers, psy fields, phantom hits) sometimes doing double psy damage: the G.A.M.M.A. damage balancer and Psy Stress both subtracted psy health for the same hit, depending on callback order. Psy hits now skip the balancer's psy subtraction; its heartbeat sound and screen effect stay.
 - 0.8.3: stability and cleanup - a save made during the psy death scene no longer leaves input disabled or NPCs ignoring the player; psy health functions are safe when another mod calls them before the player exists; no global variables left in the scripts.
+- 0.8.4: mod renamed from PsyStressOverhaulByExpand to Psy Stress Remake: MCM tab "Psy Stress Remake" (Russian: "Ремейк пси-стресса"), zip name, log lines "[Psy Stress Remake]". Gameplay unchanged; MCM settings keep their IDs, so your settings are kept.
 
 **Requirements**
 - MCM 1.7.1 or newer for presets that move the sliders (GAMMA ships MCM by RavenAscendant).

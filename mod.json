@@ -1,8 +1,8 @@
 {
   "name": "Psy Stress Remake",
-  "version": "0.8.3",
-  "zip": "Psy Stress Remake by Expand {version}",
-  "zipLegacy": ["PsyStressOverhaulByExpand_{version}", "Psy Stress Overhaul by Expand {version}"],
+  "version": "0.8.4",
+  "zip": "Psy_Stress_Remake_by_Expand_{version}",
+  "zipLegacy": ["PsyStressOverhaulByExpand_{version}", "Psy Stress Overhaul by Expand {version}", "Psy Stress Remake by Expand {version}"],
   "versionFiles": [
     "src/readme.md",
     "src/gamedata/scripts/arszi_psy.script",

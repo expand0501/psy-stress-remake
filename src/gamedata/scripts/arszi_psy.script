@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
---Psy Stress Remake by Expand 0.8.3 - based on STRESSFULL ZONE v1.06.04 by livvan-
+--Psy Stress Remake by Expand 0.8.4 - based on STRESSFULL ZONE v1.06.04 by livvan-
 
 --PPE SETTINGS------------------------------------------------------------------
 local sound_mods_compatibility = stress_mcm.get_config("sound_mods_compatibility") ~= false    --remove some sound effects for sound/voice mods compatibility

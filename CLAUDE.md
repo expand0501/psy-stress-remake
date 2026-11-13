@@ -1,6 +1,6 @@
 # Psy Stress Remake
 
-Renamed from "Psy Stress Overhaul" / PsyStressOverhaulByExpand to "Psy Stress Remake" (2026-11-13; zip name changes with the next version, 0.8.4). Workspace folder and GitHub repo renamed to `psy-stress-remake` the same day.
+Renamed from "Psy Stress Overhaul" / PsyStressOverhaulByExpand to "Psy Stress Remake" (2026-11-13; zip `Psy_Stress_Remake_by_Expand_<version>.zip` from 0.8.4 on). Workspace folder and GitHub repo renamed to `psy-stress-remake` the same day.
 
 Remake of livvan's Psy Stress / Stressfull Zone 1.06.04 for G.A.M.M.A. Single GAMMA-only version.
 Shipped readme: `src/readme.md` (full feature list, presets, version history, install notes).
