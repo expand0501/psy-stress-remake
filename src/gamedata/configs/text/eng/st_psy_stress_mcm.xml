@@ -2,11 +2,11 @@
 <string_table>
 	
 	<string id="ui_mcm_menu_psy_stress">
-		<text>Psy Stress Overhaul</text>
+		<text>Psy Stress Remake</text>
 	</string>
 	
 	<string id="ui_mcm_psy_stress_author_info">
-		<text>PsyStressOverhaulByExpand 0.8.3 - made by Expand. Based on Psy Stress 1.06.04 by livvan.</text>
+		<text>Psy Stress Remake 0.8.3 - made by Expand. Based on Psy Stress 1.06.04 by livvan.</text>
 	</string>
 	
 	<string id="ui_mcm_menu_psy_stress_title_gameplay">

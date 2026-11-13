@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
---PsyStressOverhaulByExpand 0.8.3 - based on STRESSFULL ZONE v1.06.04 by livvan-
+--Psy Stress Remake by Expand 0.8.3 - based on STRESSFULL ZONE v1.06.04 by livvan-
 
 --PPE SETTINGS------------------------------------------------------------------
 local sound_mods_compatibility = stress_mcm.get_config("sound_mods_compatibility") ~= false    --remove some sound effects for sound/voice mods compatibility
@@ -57,7 +57,7 @@ local c_controller_damage_max_distance = ( stress_mcm.get_config("controller_dam
 local c_psy_hit_stress_multiplier = ( stress_mcm.get_config("hit_stress") or 22.4 ) / 100                           --multiplier for stress on being hit
 local c_psy_wound_stress_multiplier = ( stress_mcm.get_config("wounded_stress") or 112 ) / 600000                   --multiplier for stress drain from not being at full physical health
 
---PRESETS (Psy Stress Overhaul)-------------------------------------------------
+--PRESETS (Psy Stress Remake)-------------------------------------------------
 --MCM presets move the sliders (see stress_mcm.script), so drain/hit/wound/regen are read from the sliders directly.
 --Recovery sources without a slider (psy boosters, artefacts, sleep and surge cover recovery)
 --follow the basic regeneration slider relative to its original value (26).
@@ -128,7 +128,7 @@ local psy_env_state = {}
 local safe_bases = {}
 local level_static_anomaly_zones = {}
 
---OPTIMIZATION (Psy Stress Overhaul)--------------------------------------------
+--OPTIMIZATION (Psy Stress Remake)--------------------------------------------
 local c_update_gate_ms = 33            --real-time gate before the in-game-second check (no game time object created every frame)
 local c_env_refresh_ms = 500           --slow environment checks (anomaly zones, camps, campfires, hunger/thirst/sleep, night) twice per real second
 local update_gate_next = 0
@@ -260,7 +260,7 @@ function get_ppe_audio_intensity()
 end
 
 
---Compatibility (Psy Stress Overhaul): other GAMMA mods (e.g. "Phantoms at low psy health" + "Maybelline's Restore XCV phantoms")
+--Compatibility (Psy Stress Remake): other GAMMA mods (e.g. "Phantoms at low psy health" + "Maybelline's Restore XCV phantoms")
 --read psy health from this function and expect the scale of G.A.M.M.A. Psy rework: (1 - psy health) * 0.01.
 --Psy Stress itself does not use it.
 local c_gamma_ppe_max_intensity = 0.01
@@ -344,7 +344,7 @@ local function actor_on_first_update()
 		psy_table.psy_death_scene = nil
 		level.enable_input()
 		remove_all_psy_ppe_effects()
-		printf("[Psy Stress Overhaul] unfinished psy death scene from the save cleared")
+		printf("[Psy Stress Remake] unfinished psy death scene from the save cleared")
 	end
 
 	init_safe_bases()
@@ -720,9 +720,9 @@ end
 
 
 --------------------------------------------------------------------------------
-------------XCVB PHANTOMS INTEGRATION (Psy Stress Overhaul)---------------------
+------------XCVB PHANTOMS INTEGRATION (Psy Stress Remake)---------------------
 --"Phantoms at low psy health" (xcv_phantoms.script) spawns its own phantoms with its own threshold.
---Psy Stress Overhaul takes over: xcvb's automatic spawning is turned off, and its phantoms are only
+--Psy Stress Remake takes over: xcvb's automatic spawning is turned off, and its phantoms are only
 --spawned by manage_phantoms() above (Psy Stress threshold, delay and max count).
 
 function xcv_phantoms_available()
@@ -787,7 +787,7 @@ function take_over_xcv_phantoms()
 	RegisterScriptCallback("actor_on_update", xcv_maintenance)
 	if not xcv_takeover_logged then
 		xcv_takeover_logged = true
-		printf("[Psy Stress Overhaul] xcvb phantoms: automatic spawning turned off, phantoms follow Psy Stress settings")
+		printf("[Psy Stress Remake] xcvb phantoms: automatic spawning turned off, phantoms follow Psy Stress settings")
 	end
 end
 

@@ -54,7 +54,7 @@ local default = {
 --]]
 
 --------------------------------------------------------------------------------
--- Psy Stress Overhaul: presets move the sliders
+-- Psy Stress Remake: presets move the sliders
 -- Uses MCM's built-in "preset" option type (MCM 1.7.1+): selecting a preset
 -- sets the listed sliders on the same page (pending until "Accept").
 -- Older MCM versions show a plain list instead (sliders are then set by hand).

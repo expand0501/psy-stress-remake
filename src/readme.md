@@ -1,6 +1,6 @@
-**PsyStressOverhaulByExpand 0.8.3**
+**Psy Stress Remake by Expand 0.8.3**
 
-Psy Stress overhaul for G.A.M.M.A. by Expand, based on Psy Stress / Stressfull Zone 1.06.04 by livvan
+Psy Stress remake for G.A.M.M.A. by Expand, based on Psy Stress / Stressfull Zone 1.06.04 by livvan
 (https://www.moddb.com/mods/stalker-anomaly/addons/psy-stress). Single version for S.T.A.L.K.E.R. Anomaly G.A.M.M.A.
 
 **What it does (unchanged from the original)**
@@ -9,15 +9,15 @@ Psy Stress overhaul for G.A.M.M.A. by Expand, based on Psy Stress / Stressfull Z
 - Stress decreases: emission cover, non-hostile camps, lit campfires.
 - Psy-health recovery: natural regeneration while calm, sleep, items with a psy booster (Psy-Block and similar), psy-protecting artefacts, anabiotic (full restore).
 - Psy damage from psy fields and controllers, low-psy effects (blur, sound shock, voices, phantoms), death or zombification at zero psy health.
-- Everything configurable in MCM (Psy Stress Overhaul tab).
+- Everything configurable in MCM (Psy Stress Remake tab).
 
 **Phantoms**
-- MCM > Psy Stress Overhaul > Gameplay Modes > Phantom appearance: Realistic mutants (default) or Classic phantoms.
+- MCM > Psy Stress Remake > Gameplay Modes > Phantom appearance: Realistic mutants (default) or Classic phantoms.
 - Realistic mutants use "Phantoms at low psy health" (xcvb) together with "Maybelline's Restore XCV phantoms" (both in G.A.M.M.A.): phantoms look like real mutants and vanish from one hit. Without them, classic phantoms are used.
 - Both kinds appear only below the Psy Stress phantom threshold (Stress Stages), with the Psy Stress delay and max count. The xcvb mod's own automatic spawning is turned off.
 
 **Presets**
-Two drop-down lists at the top of MCM > Psy Stress Overhaul > General Configuration. Selecting a preset moves the sliders below it to the preset values (press Accept to apply); the sliders can be fine-tuned afterwards.
+Two drop-down lists at the top of MCM > Psy Stress Remake > General Configuration. Selecting a preset moves the sliders below it to the preset values (press Accept to apply); the sliders can be fine-tuned afterwards.
 - Psy damage preset: Uneasy (3x original), Tense (5x), Harsh (8x), Brutal (10x), Nightmare (15x). Sets basic psy drain, psy stress on receiving damage and psy stress from wounds. Psy attacks (controllers, psy fields) are not affected. Default: Harsh.
 - Psy regeneration preset: Steady (1x, original, easiest), Shaken (0.7x), Fragile (0.3x), Broken (0.1x). Sets basic psy regeneration and campfire regeneration. Psy boosters (Psy-Block etc.), psy-protecting artefacts, sleep and surge cover recovery follow the basic regeneration slider. Anabiotic still restores psy health fully. Default: Steady.
 
