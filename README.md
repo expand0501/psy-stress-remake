@@ -42,6 +42,11 @@ Open an [issue](https://github.com/expand0501/psy-stress-remake/issues) with the
 - **livvan**: the original Psy Stress / Stressfull Zone mod.
 - **Expand**: this remake for G.A.M.M.A.
 
+## License
+
+[CC BY-NC-SA 4.0](LICENSE): you may share and change this mod, including in modpacks, if you credit Expand,
+do not use it commercially and keep the same license. The parts from livvan's original mod remain his work.
+
 ---
 
 ## Русский
@@ -87,3 +92,9 @@ Open an [issue](https://github.com/expand0501/psy-stress-remake/issues) with the
 
 - **livvan** — оригинальный мод Psy Stress / Stressfull Zone.
 - **Expand** — этот ремейк для G.A.M.M.A.
+
+### Лицензия
+
+[CC BY-NC-SA 4.0](LICENSE): мод можно распространять и изменять, в том числе включать в сборки, если указать
+автора (Expand), не использовать его в коммерческих целях и сохранить ту же лицензию. Части оригинального мода
+livvan остаются его работой.
