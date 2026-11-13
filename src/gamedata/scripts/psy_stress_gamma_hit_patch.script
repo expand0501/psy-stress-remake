@@ -1,0 +1,72 @@
+--------------------------------------------------------------------------------
+-- PsyStressOverhaulByExpand 0.8.3 - G.A.M.M.A. hit stress patch
+--
+-- Problem: G.A.M.M.A. Actor Damage Balancer (grok_actor_damage_balancer.script)
+-- handles every physical hit on the player itself in actor_on_before_hit:
+-- it applies the damage with set_health_ex(), sets the hit power to 0 and
+-- cancels the engine hit (flags.ret_value = false). Because the engine hit is
+-- cancelled, "actor_on_hit_callback" never fires, and that callback is the only
+-- place where Psy Stress drains psy health for being shot or bitten.
+--
+-- Fix: the damage balancer still calls its own PBA_a_ohc(actor, damage, ...)
+-- after applying the damage. This patch wraps that function and forwards the
+-- real health damage to Psy Stress's arszi_psy.actor_on_hit_callback().
+--
+-- Second fix (0.8.2): the damage balancer also subtracts psy health for psy
+-- (telepatic) hits in shit_booster(), because G.A.M.M.A. Psy rework does not
+-- handle psy hits itself. Psy Stress does handle them (arszi_psy.actor_on_before_hit),
+-- so depending on callback order a psy attack was applied twice. Psy hits now
+-- skip the balancer's psy subtraction; its heartbeat sound and screen effect stay.
+--------------------------------------------------------------------------------
+
+local patched = false
+
+local function psy_stress_present()
+	-- Psy Stress defines mcm_reinitialization and actor_on_hit_callback;
+	-- GAMMA's own arszi_psy (Psy rework) defines neither.
+	return arszi_psy and arszi_psy.actor_on_hit_callback and arszi_psy.mcm_reinitialization
+end
+
+local function apply_patch()
+	if patched then return end
+
+	if not grok_actor_damage_balancer or not grok_actor_damage_balancer.PBA_a_ohc then
+		printf("[psy_stress_gamma_hit_patch] grok_actor_damage_balancer.PBA_a_ohc not found - patch not applied")
+		return
+	end
+
+	if not psy_stress_present() then
+		printf("[psy_stress_gamma_hit_patch] Psy Stress arszi_psy not active (check MO2 order) - patch not applied")
+		return
+	end
+
+	local base_ohc = grok_actor_damage_balancer.PBA_a_ohc
+
+	grok_actor_damage_balancer.PBA_a_ohc = function(obj, amount, local_direction, who, bone_id, ...)
+		local result = base_ohc(obj, amount, local_direction, who, bone_id, ...)
+
+		if amount and amount > 0 and db.actor and db.actor:alive() then
+			arszi_psy.actor_on_hit_callback(obj, amount, local_direction, who, bone_id)
+		end
+
+		return result
+	end
+
+	local base_booster = grok_actor_damage_balancer.shit_booster
+	if type(base_booster) == "function" then
+		grok_actor_damage_balancer.shit_booster = function(shit, ...)
+			if shit and shit.type == hit.telepatic then
+				return  -- psy damage is applied by Psy Stress (arszi_psy.actor_on_before_hit)
+			end
+			return base_booster(shit, ...)
+		end
+		printf("[psy_stress_gamma_hit_patch] psy hits: GAMMA damage balancer psy subtraction disabled (applied by Psy Stress)")
+	end
+
+	patched = true
+	printf("[psy_stress_gamma_hit_patch] hit stress forwarded from GAMMA damage balancer to Psy Stress")
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_first_update", apply_patch)
+end

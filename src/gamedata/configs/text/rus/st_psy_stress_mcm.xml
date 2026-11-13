@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="windows-1251" standalone="yes" ?>
+<string_table>
+	<string id="ui_mcm_menu_psy_stress">
+		<text>Переработка пси-стресса</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_author_info">
+		<text>PsyStressOverhaulByExpand 0.8.3 - автор: Expand. Основано на Psy Stress 1.06.04 от livvan.</text>
+	</string>
+	
+	<string id="ui_mcm_menu_psy_stress_title_gameplay">
+		<text>Режим игры</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_cozy_campfire_enabled">
+		<text>Использовать Cozy Campfires от Voland33</text>
+	</string>
+	<string id="ui_mcm_psy_stress_cozy_campfire_enabled_desc">
+		<text>\n
+		Вместо 'Снижение стресса у костра' используется 'Регенерация пси-здоровья у костра'.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_phantoms_enabled">
+		<text>Галлюцинации: фантомы</text>
+	</string>
+	<string id="ui_mcm_psy_stress_phantoms_enabled_desc">
+		<text>\n
+		Галлюцинации начинают появляться, когда пси-здоровье падает ниже %, который настраивается в разделе уровней стресса.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_phantom_style">
+		<text>Вид фантомов</text>
+	</string>
+	<string id="ui_mcm_psy_stress_phantom_style_desc">
+		<text>\n
+		Классические: обычные фантомы-призраки появляются рядом с вами.\n
+		Реалистичные мутанты: фантомы выглядят как настоящие мутанты (собаки, снорки, изломы и другие), бегут к вам издалека и исчезают от одного попадания. Нужны моды "Phantoms at low psy health" (xcvb) и "Maybelline's Restore XCV phantoms" (оба есть в G.A.M.M.A.), иначе используются классические фантомы.\n
+		Оба варианта используют порог появления, задержку и максимум фантомов из Psy Stress. Автоматическое появление фантомов мода xcvb отключается.</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_phantoms_classic">
+		<text>Классические фантомы</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_phantoms_realistic">
+		<text>Реалистичные мутанты</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_telepatic_protection_overhaul">
+		<text>Переработанный рассчёт пси-защит</text>
+	</string>
+	<string id="ui_mcm_psy_stress_telepatic_protection_overhaul_desc">
+		<text>\n
+		Включет альтернативное применение пси-защит против пси-атака.\n
+		Пси-защита используется как процент уменьщения пси-урона, вместо прямого вычитания.\n
+		Уменьшает частоту ситуаций, когда урон некоторых источникво пси-урона равен нулю,\n
+		в то время как остальной пси-урон практически не снижается.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_zombfication_enabled">
+		<text>Зомбификация</text>
+	</string>
+	<string id="ui_mcm_psy_stress_zombfication_enabled_desc">
+		<text>\n
+		Включает возможность превращения в зомби, если персонаж умирает от пси-урона.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_sound_mods_compatibility">
+		<text>Совместимость с голосовыми модами</text>
+	</string>
+	<string id="ui_mcm_psy_stress_sound_mods_compatibility_desc">
+		<text>\n
+		Убирает голосовые эффекты при низком пси-здоровье для совместимости с модами, которые добавляют голос персонажа.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_psy_debug">
+		<text>Пси-стресс DEBUG режим</text>
+	</string>
+	<string id="ui_mcm_psy_stress_psy_debug_desc">
+		<text>\n
+		Работает, если debug режим Anomaly включен. Генерирует подробный лог для Пси-стресса.</text>
+	</string>
+	
+	<string id="ui_mcm_menu_psy_stress_title_generalconfig">
+		<text>Общие настройки</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_regen">
+		<text>Базовая пси-регенерация (X% за 6 часов)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_regen_desc">
+		<text>\n
+		Базовая пси-регенерация, добавляется, если есть другие эффекты, восстанавливающие пси-здоровье.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_drain">
+		<text>Базовый стресс (-X% в 6 часов)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_drain_desc">
+		<text>\n
+		Базовая потеря пси-здоровья из-за стресса. На это значение влияют модификаторы эффектов среды, которые настраиваются в разделе эффектов окружающей среды.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_hit_stress">
+		<text>Пси-стресс при получении урона (X% урона)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_hit_stress_desc">
+		<text>\n
+		% физического урона, который конвертируется в пси-урон из-за боли.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_wounded_stress">
+		<text>Пси-стресс от ранений (за каждые -10% здоровья потеря X% в 10 минут)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_wounded_stress_desc">
+		<text>\n
+		Продолжающаяся потеря пси-здоровья, если персонаж ранен. За каждые 10% потерянного здоровья теряется X% пси-здоровья в 10 минут.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_psy_damage_preset">
+		<text>Пресет пси-урона</text>
+	</string>
+	<string id="ui_mcm_psy_stress_psy_damage_preset_desc">
+		<text>\n
+		Выбор пресета передвигает ползунки пси-истощения, пси-стресса от урона и пси-стресса от ранений на значения пресета (нажмите "Принять"). После этого ползунки можно подстроить вручную.\n
+		Тревожно - самый мягкий пресет (3x от оригинального Psy Stress), Кошмар - самый тяжёлый (15x). По умолчанию: Сурово (8x).\n
+		Пси-атаки (контролёры, пси-поля) не затрагиваются.</text>
+	</string>
+	<string id="ui_mcm_psy_stress_psy_regen_preset">
+		<text>Пресет пси-регенерации</text>
+	</string>
+	<string id="ui_mcm_psy_stress_psy_regen_preset_desc">
+		<text>\n
+		Выбор пресета передвигает ползунки базовой пси-регенерации и регенерации у костра на значения пресета (нажмите "Принять"). После этого ползунки можно подстроить вручную.\n
+		Стойкость - оригинальная регенерация Psy Stress (самый лёгкий пресет); Потрясение, Хрупкость и Надлом медленнее (0.7x, 0.3x, 0.1x).\n
+		Пси-бустеры (Пси-блокада и т.п.), артефакты с пси-защитой, сон и укрытие от выброса следуют ползунку базовой регенерации. Анабиотик всегда полностью восстанавливает пси-здоровье.</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_dmg_uneasy">
+		<text>Тревожно</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_dmg_tense">
+		<text>Напряжённо</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_dmg_harsh">
+		<text>Сурово</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_dmg_brutal">
+		<text>Жестоко</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_dmg_nightmare">
+		<text>Кошмар</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_regen_steady">
+		<text>Стойкость</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_regen_broken">
+		<text>Надлом</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_regen_fragile">
+		<text>Хрупкость</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_regen_shaken">
+		<text>Потрясение</text>
+	</string>
+	
+	<string id="ui_mcm_menu_psy_stress_title_enviromentevaluation">
+		<text>Настройка эффектов окружающей среды</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_safe_distance_to_camp">
+		<text>Безопасная дистанция до лагеря (в метрах)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_safe_distance_to_camp_desc">
+		<text>\n
+		Расстояние от центральной точки лагеря до игрока. Игрок считается находящимся в лагере, если расстояние меньше этого значения. Лагеря, в которых находятся спавны только враждебных группировок, не считаются безопасными.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_campfire_distance">
+		<text>
+		Дистанция эффекта спокойствия от костра (в метрах)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_campfire_distance_desc">
+		<text>\n
+		Если расстояние до костра меньше этого значения, применяется эффект спокойствия от костра.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_danger_distance_static_anomaly">
+		<text>Радиус статичных аномальных зон (в метрах)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_danger_distance_static_anomaly_desc">
+		<text>\n
+		Расстояние от центра статичной аномальной зоны, с которого начинает применяться эффект, усиливающий стресс.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_emission_cover_stress_reduction">
+		<text>Снижение стресса при нахождении в укрытии (-X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_emission_cover_stress_reduction_desc">
+		<text>\n
+		Снижение стресса, если персонаж находится в защищённом от выбросов месте. Рассчитывается по формуле (100 - X)%.\n
+		При отрицательном значении пси-здоровье будет восстанавливаться. Например: (100-125)% = -25%, 25% от базового пси-стресса будет восстанавливаться.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_safe_camp_stress_reduction">
+		<text>Снижение стресса при нахождении в невраждебном лагере (-X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_safe_camp_stress_reduction_desc">
+		<text>\n
+		Снижение стресса, если персонаж находится в невраждебном лагере. Применяется в лагерях, где находятся спавны дружественных или нейтральных группировок.\n
+		Рассчитывается по формуле (100 - X)%.\n
+		При отрицательном значении пси-здоровье будет восстанавливаться. Например: (100-125)% = -25%, 25% от базового пси-стресса будет восстанавливаться.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_campfire_stress_reduction">
+		<text>Снижение стресса у костра (-X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_campfire_stress_reduction_desc">
+		<text>\n
+		Снижение стресса рядом с горящим костром. Не применяется, если включена опция 'Использовать Cozy Campfires от Voland33'.\n
+		Рассчитывается по формуле (100 - X)%.\n
+		При отрицательном значении пси-здоровье будет восстанавливаться. Например: (100-125)% = -25%, 25% от базового пси-стресса будет восстанавливаться.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_surge_stress_increase">
+		<text>Усиление стресса во время выбросов (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_surge_stress_increase_desc">
+		<text>\n
+		Усиление базового стресса во время выбросов.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_ungerground_stress_increase">
+		<text>Усиление стресса в подземных локациях (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_ungerground_stress_increase_desc">
+		<text>\n
+		Усиление базового стресса, если персонаж находится в подземных локациях.\n
+		При отрицательном значении стресс будет снижаться.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_azone_close_stress_increase">
+		<text>Усиление стресса в статичных аномальных зонах (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_azone_close_stress_increase_desc">
+		<text>\n
+		Усиление базового стресса, если персонаж находится в статичной аномальной зоне.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_anomaly_sense_stress_increase">
+		<text>Усиление стресса рядом с активной аномалией (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_anomaly_sense_stress_increase_desc">
+		<text>\n
+		Усиление базового стресса, если персонаж находится рядом с активной аномалией.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_combat_stress_increase">
+		<text>Усиление стресса в бою (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_combat_stress_increase_desc">
+		<text>\n
+		Усиление базового стресса в бою.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_nighttime_stress_increase">
+		<text>Усиление стресса ночью (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_nighttime_stress_increase_desc">
+		<text>\n
+		Усиление базового стресса между 20:00 и 06:00.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_hunger_stress_increase">
+		<text>Усиление стресса от голода (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_hunger_stress_increase_desc">
+		<text>\n
+		Усиление базового стресса из-за голода. Умножается на текущий уровень голода.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_thirst_stress_increase">
+		<text>Усиление стресса от жажды (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_thirst_stress_increase_desc">
+		<text>\n
+		Усиление базового стресса из-за обезвоживания. Умножается на текущий уровень обезвоживания.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_sleepness_stress_increase">
+		<text>Усиление стресса от недосыпа (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_sleepness_stress_increase_desc">
+		<text>\n
+		Усиление базового стресса из-за недостаток сна. Умножается на текущий уровень недосыпа.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_campfire_regen">
+		<text>Регенерация пси-здоровья у костра (X% в 10 минут)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_campfire_regen_desc">
+		<text>\n
+		Регенерация пси-здоровья рядом с горящим костром.\n
+		Применяется, если включена опция 'Использовать Cozy Campfires от Voland33'. Отключает 'Снижение стресса у костра'.</text>
+	</string>
+	
+	<string id="ui_mcm_menu_psy_stress_title_stressstages">
+		<text>Уровни стресса</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_stage_1">
+		<text>Первый уровень стресса (X% пси-здоровья)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_stage_1_desc">
+		<text>\n
+		Если пси-здоровье ниже этого значения, начинают появляться мелкие визуальные эффекты.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_stage_2">
+		<text>Второй уровень стресса (X% пси-здоровья)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_stage_2_desc">
+		<text>\n
+		Если пси-здоровье ниже этого значения, начинают появляться значительные визуальные эффекты.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_voices">
+		<text>Звуковые галлюцинации (X% пси-здоровья)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_voices_desc">
+		<text>\n
+		Если пси-здоровье ниже этого значения, слышен (а слышен ли на самом деле?) голос Зоны.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_voices_volume_max">
+		<text>Максимальная громкость галлюцинаций</text>
+	</string>
+	<string id="ui_mcm_psy_stress_voices_volume_max_desc">
+		<text>\n
+		Максимальная громкость звуковых галлюцинаций. Звуковые галлюцинации достигнут этой громкости при 20% пси-здоровья.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_voices_volume_min">
+		<text>Минимальная громкость галлюцинаций</text>
+	</string>
+	<string id="ui_mcm_psy_stress_voices_volume_min_desc">
+		<text>\n
+		Минимальная громкость звуковых галлюцинаций.\note
+		Звуковые галлюцинации начнутся най этой громкости при достижении пси-здоровьем уровня, указанного в настройке 'Звуковые галлюцинации'.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_max_phantoms">
+		<text>Максимальное количество фантомов</text>
+	</string>
+	<string id="ui_mcm_psy_stress_max_phantoms_desc">
+		<text>\n
+		Максимальное количество визуальных галлюцинаций.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_stage_phantoms">
+		<text>Галлюцинации начинаются (X% пси-здоровья)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_stage_phantoms_desc">
+		<text>\n
+		Если пси-здоровье ниже этого значения, начинаются визуальные галлюцинации.</text>
+	</string>
+	
+	<string id="ui_mcm_menu_psy_stress_title_additionaloptions">
+		<text>Дополнительные настройки</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_zombfication_chance">
+		<text>Шанс зомбификации (X%)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_zombfication_chance_desc">
+		<text>\n
+		Вероятность того, что персонаж не умрет от потери пси-здоровья, а превратится в зомби.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_controller_damage_multiplier">
+		<text>Множитель для пси-атаки Контролёра (X% изначального)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_controller_damage_multiplier_desc">
+		<text>\n
+		Балансирует урон от пси-атаки Контролёра. Применяется после расчёта защитных пси-эффектов, чтобы сохранить их эффективность.</text>
+	</string>
+	
+	<string id="ui_mcm_psy_stress_controller_damage_max_distance">
+		<text>Максимальная дистанция пси-атаки Контролёра (в метрах)</text>
+	</string>
+	<string id="ui_mcm_psy_stress_controller_damage_max_distance_desc">
+		<text>\n
+		Если дистанция больше максимальной, пси-атака Контролёра не наносит урона.\n
+		Если дистанция 0.1 от максимальной, пси-атака Контролёра наносит полный урон.\n
+		Между этими дистанциями урон снижается линейно до 10% урона на максимальной дистанции.</text>
+	</string>
+	
+	<!-- 
+	<string id="ui_mcm_psy_stress_XXX">
+		<text>Xxx</text>
+	</string>
+	<string id="ui_mcm_psy_stress_XXX_desc">
+		<text>\n
+		Xxx</text>
+	</string>
+	-->
+</string_table>

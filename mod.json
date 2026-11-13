@@ -1,0 +1,13 @@
+{
+  "name": "Psy Stress Remake",
+  "version": "0.8.3",
+  "zip": "Psy Stress Remake by Expand {version}",
+  "zipLegacy": ["PsyStressOverhaulByExpand_{version}", "Psy Stress Overhaul by Expand {version}"],
+  "versionFiles": [
+    "src/readme.md",
+    "src/gamedata/scripts/arszi_psy.script",
+    "src/gamedata/scripts/psy_stress_gamma_hit_patch.script",
+    "src/gamedata/configs/text/eng/st_psy_stress_mcm.xml",
+    "src/gamedata/configs/text/rus/st_psy_stress_mcm.xml"
+  ]
+}

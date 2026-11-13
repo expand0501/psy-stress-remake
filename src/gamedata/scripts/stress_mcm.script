@@ -1,0 +1,173 @@
+---[[
+local default = {
+	psy_debug = false,
+	sound_mods_compatibility = true,
+
+	psy_damage_preset = "harsh",
+	psy_regen_preset = "steady",
+
+	regen = 26,
+	drain = 104,
+	hit_stress = 22.4,
+	wounded_stress = 112,
+
+	safe_distance_to_camp = 35,
+	danger_distance_static_anomaly = 30,
+
+	emission_cover_stress_reduction = 125,
+	safe_camp_stress_reduction = 50,
+	campfire_stress_reduction = 75,
+
+	surge_stress_increase  = 66,
+	ungerground_stress_increase = 33,
+	azone_close_stress_increase = 50,
+	anomaly_sense_stress_increase = 50,
+	combat_stress_increase = 66,
+	nighttime_stress_increase = 100,
+	hunger_stress_increase = 10,
+	thirst_stress_increase = 10,
+	sleepness_stress_increase = 10,
+
+	cozy_campfire_enabled = false,
+	campfire_regen = 1.8,
+	campfire_distance = 15,
+
+	stage_1 = 75,
+	stage_2 = 50,
+	voices = 70,
+
+	voices_volume_max = 40,
+	voices_volume_min = 4,
+
+	phantoms_enabled = true,
+	phantom_style = "realistic",
+	max_phantoms = 3,
+	stage_phantoms = 25,
+
+	zombfication_enabled = true,
+	zombfication_chance = 50,
+
+	telepatic_protection_overhaul = true,
+	controller_damage_multiplier = 40,
+	controller_damage_max_distance = 50,
+}
+--]]
+
+--------------------------------------------------------------------------------
+-- Psy Stress Overhaul: presets move the sliders
+-- Uses MCM's built-in "preset" option type (MCM 1.7.1+): selecting a preset
+-- sets the listed sliders on the same page (pending until "Accept").
+-- Older MCM versions show a plain list instead (sliders are then set by hand).
+--------------------------------------------------------------------------------
+-- original Psy Stress values (1x) and slider precision
+local preset_base = {
+	psy_damage_preset = { drain = {13, 0}, hit_stress = {2.8, 1}, wounded_stress = {14, 1} },
+	psy_regen_preset  = { regen = {26, 1}, campfire_regen = {1.8, 2} },
+}
+-- text keys (recommended by MCM for presets): key = multiplier
+local damage_multipliers = { {"uneasy", 3}, {"tense", 5}, {"harsh", 8}, {"brutal", 10}, {"nightmare", 15} }
+local regen_multipliers = { {"steady", 1}, {"shaken", 0.7}, {"fragile", 0.3}, {"broken", 0.1} }
+
+local function round(x, prec)
+	local m = 10 ^ prec
+	return math.floor(x * m + 0.5) / m
+end
+
+local function build_presets(preset_id, multipliers)
+	local presets = {}
+	for _, entry in ipairs(multipliers) do
+		local values = {}
+		for key, data in pairs(preset_base[preset_id]) do
+			values[key] = round(data[1] * entry[2], data[2])
+		end
+		presets[entry[1]] = values
+	end
+	return presets
+end
+
+local damage_presets = build_presets("psy_damage_preset", damage_multipliers)
+local regen_presets = build_presets("psy_regen_preset", regen_multipliers)
+
+local function preset_type()
+	-- get_gui() was added in MCM 1.7.1 together with the preset widget
+	return (ui_mcm and ui_mcm.get_gui) and "preset" or "list"
+end
+
+---[[
+function on_mcm_load()
+	local raw_config = { id = "psy_stress", sh = true, gr = {
+		{ id = "author_info", type = "desc", text = "ui_mcm_psy_stress_author_info"},
+		{ type = "line"},
+		--{ id = "gameplay_modes" type = "title", text = "Gameplay modes"},
+		{ id = "title_gameplay", type = "title", text = "ui_mcm_menu_psy_stress_title_gameplay"},
+		{ id = "telepatic_protection_overhaul", type = "check", val = 1, def = true},
+		{ id = "cozy_campfire_enabled", type = "check", val = 1, def = false},
+		{ id = "phantoms_enabled", type = "check", val = 1, def = true},
+		{ id = "phantom_style", type = "list", val = 0, def = "realistic", content = { {"classic", "psy_stress_phantoms_classic"}, {"realistic", "psy_stress_phantoms_realistic"} } },
+		{ id = "zombfication_enabled", type = "track", type = "check", val = 1, def = true},
+		{ id = "sound_mods_compatibility", type = "check", val = 1, def = true},
+		{ id = "psy_debug", type = "check", val = 1, def = false},
+		{ type = "line"},
+		--{ type = "title", text = "General Configuration"},
+		{ id = "title_generalconfig", type = "title", text = "ui_mcm_menu_psy_stress_title_generalconfig"},
+		{ id = "psy_damage_preset", type = preset_type(), val = 0, def = "harsh", content = { {"uneasy", "psy_stress_dmg_uneasy"}, {"tense", "psy_stress_dmg_tense"}, {"harsh", "psy_stress_dmg_harsh"}, {"brutal", "psy_stress_dmg_brutal"}, {"nightmare", "psy_stress_dmg_nightmare"} }, presets = damage_presets },
+		{ id = "psy_regen_preset", type = preset_type(), val = 0, def = "steady", content = { {"steady", "psy_stress_regen_steady"}, {"shaken", "psy_stress_regen_shaken"}, {"fragile", "psy_stress_regen_fragile"}, {"broken", "psy_stress_regen_broken"} }, presets = regen_presets },
+		{ id = "regen", type = "track", val = 2, min = 0, max = 100, step = 0.1, prec = 1, def = 26},
+		{ id = "drain", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 104},
+		{ id = "hit_stress", type = "track", val = 2, min = 0, max = 50, step = 0.1, prec = 1, def = 22.4},
+		{ id = "wounded_stress", type = "track", val = 2, min = 0, max = 250, step = 0.1, prec = 1, def = 112},
+		{ type = "line"},
+		--{ id = "enviroment_evaluation", type = "title", text = "Environmental evaluation config"},
+		{ id = "title_enviromentevaluation", type = "title", text = "ui_mcm_menu_psy_stress_title_enviromentevaluation"},
+		{ id = "safe_distance_to_camp", type = "track", val = 2, min = 10, max = 50, step = 1, prec = 0, def = 35},
+		{ id = "campfire_distance", type = "track", val = 2, min = 5, max = 25, step = 1, prec = 0, def = 15},
+		{ id = "danger_distance_static_anomaly", type = "track", val = 2, min = 15, max = 50, prec = 0, step = 1, def = 30},
+
+		{ id = "emission_cover_stress_reduction", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 125},
+		{ id = "safe_camp_stress_reduction", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 50},
+		{ id = "campfire_stress_reduction", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 75},
+
+		{ id = "surge_stress_increase", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 66},
+		{ id = "ungerground_stress_increase", type = "track", val = 2, min = -150, max = 200, step = 1, prec = 0, def = 33},
+		{ id = "azone_close_stress_increase", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 50},
+		{ id = "anomaly_sense_stress_increase", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 50},
+		{ id = "combat_stress_increase", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 66},
+		{ id = "nighttime_stress_increase", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 100},
+		{ id = "hunger_stress_increase", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 10},
+		{ id = "thirst_stress_increase", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 10},
+		{ id = "sleepness_stress_increase", type = "track", val = 2, min = 0, max = 200, step = 1, prec = 0, def = 10},
+
+		{ id = "campfire_regen", type = "track", val = 2, min = 0, max = 25, step = 0.01, prec = 2, def = 1.8},
+		{ type = "line"},
+		--{ type = "title", text = "Stress Stages"},
+		{ id = "title_stressstages", type = "title" , text = "ui_mcm_menu_psy_stress_title_stressstages"},
+		{ id = "stage_1", type = "track", val = 2, min = 50, max = 90, step = 1, prec = 0, def = 75},
+		{ id = "stage_2", type = "track", val = 2, min = 25, max = 80, step = 1, prec = 0, def = 50},
+		{ id = "voices", type = "track", val = 2, min = 1, max = 100, step = 1, prec = 0, def = 70},
+
+		{ id = "voices_volume_max", type = "track", val = 2, min = 0, max = 100, step = 5, prec = 0, def = 40},
+		{ id = "voices_volume_min", type = "track", val = 2, min = 0, max = 100, step = 1, prec = 0, def = 4},
+
+		{ id = "max_phantoms", type = "track", val = 2, min = 0, max = 9, step = 1, prec = 0, def = 3},
+		{ id = "stage_phantoms", type = "track", val = 2, min = 0, max = 100, step = 1, prec = 0, def = 25},
+		{ type = "line"},
+		--{ id = "additional_options", type = "title", text = "Addtional options"},
+		{ id = "title_additionaloptions", type = "title", text = "ui_mcm_menu_psy_stress_title_additionaloptions"},
+		{ id = "zombfication_chance", type = "track",  val = 2, min = 10, max = 100, step = 1, prec = 0, def = 50},
+
+		{ id = "controller_damage_multiplier", type = "track", val = 2, min = 25, max = 150, step = 1, prec = 0, def = 40},
+		{ id = "controller_damage_max_distance", type = "track", val = 2, min = 25, max = 150, step = 1, prec = 0, def = 50},
+		},
+	}
+	
+	return raw_config
+end
+--]]
+
+function get_config(key)
+	if ui_mcm then
+		return ui_mcm.get("psy_stress/"..key)
+	else
+		return default[key]
+	end
+end
