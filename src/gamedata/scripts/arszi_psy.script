@@ -1,9 +1,14 @@
 --------------------------------------------------------------------------------
---Psy Stress Remake by Expand 0.8.4 - based on STRESSFULL ZONE v1.06.04 by livvan-
+--Psy Stress Remake by Expand 0.8.7 - based on STRESSFULL ZONE v1.06.04 by livvan-
 
 --PPE SETTINGS------------------------------------------------------------------
 local sound_mods_compatibility = stress_mcm.get_config("sound_mods_compatibility") ~= false    --remove some sound effects for sound/voice mods compatibility
 local c_ppe_audio_max_intensity = 0.5
+local function get_blur_strength()
+	--screen blur strength at stress stages 1 and 2: 0 = no blur, 1 = full blur.ppe (factor 0..1)
+	return clamp(( stress_mcm.get_config("blur_strength") or 100 ) / 100, 0, 1)
+end
+local c_blur_strength = get_blur_strength()
 
 local c_id_ppe_blur = 5600
 local c_id_ppe_black_infinite = 5606
@@ -52,7 +57,8 @@ local safe_distance_to_campfire = ( stress_mcm.get_config("campfire_distance" ) 
 
 --PSY-DAMAGE--------------------------------------------------------------------
 local telepatic_protection_overhaul = stress_mcm.get_config("telepatic_protection_overhaul" ) or false             --psy protection works as a % reduction for psy damage instat of flat subtraction.
-local c_psy_controller_damage_multiplier = ( stress_mcm.get_config("controller_damage_multiplier" ) or 40 ) / 100  --psy damage divider, to balace out controller attacks
+local c_psy_controller_damage_multiplier = ( stress_mcm.get_config("controller_damage_multiplier" ) or 50 ) / 100  --psy damage divider, to balace out controller attacks
+local c_psy_anomaly_damage_multiplier = math.max(( stress_mcm.get_config("psy_anomaly_damage" ) or 35 ) / 100, 0)  --psy anomaly damage, 1 = base G.A.M.M.A. damage
 local c_controller_damage_max_distance = ( stress_mcm.get_config("controller_damage_max_distance" ) or 50 )        --with every X meters, controller's tube attack will do 1% less damage. 100*X for max distance.
 local c_psy_hit_stress_multiplier = ( stress_mcm.get_config("hit_stress") or 22.4 ) / 100                           --multiplier for stress on being hit
 local c_psy_wound_stress_multiplier = ( stress_mcm.get_config("wounded_stress") or 112 ) / 600000                   --multiplier for stress drain from not being at full physical health
@@ -72,11 +78,11 @@ local psy_regen_ratio = get_regen_ratio()
 --PSY-STATE CONTROLS------------------------------------------------------------
 local c_psy_stage_3_enabled = stress_mcm.get_config("phantoms_enabled" ) or false     --hallucination phantoms generation enabled
 local phantom_style = stress_mcm.get_config("phantom_style") or "realistic"           --"classic" ghost phantoms or "realistic" mutant phantoms (xcvb mod)
-local c_psy_stage_1 = ( stress_mcm.get_config("stage_1") or 75 ) / 100                --psy health at which first effects of stress are visible
-local c_psy_stage_2 = ( stress_mcm.get_config("stage_2") or 50 ) / 100                --psy health at which severe effects of stress are present
+local c_psy_stage_1 = ( stress_mcm.get_config("stage_1") or 60 ) / 100                --psy health at which first effects of stress are visible
+local c_psy_stage_2 = ( stress_mcm.get_config("stage_2") or 40 ) / 100                --psy health at which severe effects of stress are present
   c_psy_stage_2 = clamp(c_psy_stage_2, 0, c_psy_stage_1 - 0.01)                       --config check-- c_psy_stage_2 shouldn't be highter than c_psy_stage_1
-local c_psy_stage_phantoms = ( stress_mcm.get_config("stage_phantoms") or 25 ) / 100  --psy health at which hallucinations phantoms start.
-local c_psy_voices = ( stress_mcm.get_config("voices") or 70 ) / 100                  --psy health at which stalker starts hearing audial hallucinations, first alomost silently, than louder
+local c_psy_stage_phantoms = ( stress_mcm.get_config("stage_phantoms") or 30 ) / 100  --psy health at which hallucinations phantoms start.
+local c_psy_voices = ( stress_mcm.get_config("voices") or 50 ) / 100                  --psy health at which stalker starts hearing audial hallucinations, first alomost silently, than louder
 
 --HALLUCINATIONS----------------------------------------------------------------
 local max_phantoms = stress_mcm.get_config("max_phantoms") or 3  --max count of hallucinations phantoms
@@ -283,6 +289,56 @@ function get_controller_tube_damage(obj_position, power)
 end
 
 
+--Psy anomalies (Psy Stress Remake): psy hits whose source is an anomaly zone (psy fields and other psy anomalies),
+--plus the psy aura of Dynamic Anomalies Overhaul / Arrival (see psy_stress_dao_patch.script).
+--Psy emitters (Brain Scorcher, X16, Radar), psi-storms and mutants are not anomalies.
+local function is_psy_anomaly_source(obj)
+	if not obj then return false end
+	if IsAnomaly and IsAnomaly(obj) then return true end
+	local sec = obj:section()
+	if sec and string.find(sec, "^zone_") then return true end
+	--the DAO / Arrival psy aura hits with the actor as the source; it is counted while the aura is active
+	local actor = db.actor
+	if actor and obj:id() == actor:id() then
+		local dao = psy_stress_dao_patch
+		return dao and dao.is_aura_active and dao.is_aura_active() or false
+	end
+	return false
+end
+
+function is_psy_anomaly_hit(s_hit)
+	if not (s_hit and s_hit.type == hit.telepatic) then return false end
+	return is_psy_anomaly_source(s_hit.draftsman)
+end
+
+--Direct psy damage of the DAO / Arrival psy aura (called by psy_stress_dao_patch.script), scaled by the slider
+function change_psy_health_anomaly(amount)
+	if type(amount) ~= "number" or not db.actor or is_actor_zombied() then return end
+	if amount < 0 then amount = amount * c_psy_anomaly_damage_multiplier end
+	change_psy_health(amount)
+end
+
+--true when G.A.M.M.A. Actor Damage Balancer applies psy anomaly damage through psy_stress_gamma_hit_patch
+local function gamma_balancer_handles_anomaly_psy()
+	local patch = psy_stress_gamma_hit_patch
+	return patch and patch.handles_anomaly_psy and patch.handles_anomaly_psy() or false
+end
+
+--Called by psy_stress_gamma_hit_patch for psy anomaly hits: G.A.M.M.A.'s Actor Damage Balancer calculates the
+--base G.A.M.M.A. damage (its own psy protection and difficulty), Psy Stress scales it with the MCM slider.
+function apply_gamma_anomaly_psy_hit(base_booster, s_hit, ...)
+	if not db.actor or is_actor_zombied() then return end
+	local psy_now = get_psy_health()
+	psy_table.actor_psy_health = psy_now  --the balancer subtracts its damage from this value
+	base_booster(s_hit, ...)
+	local after = psy_table.actor_psy_health
+	local gamma_damage = (type(after) == "number") and math.max(psy_now - after, 0) or 0
+	local damage = gamma_damage * c_psy_anomaly_damage_multiplier
+	if PSY_DEBUG then printdbg_psy(true, "psy anomaly hit: G.A.M.M.A. damage %f x%.2f = %f", gamma_damage, c_psy_anomaly_damage_multiplier, damage) end
+	set_psy_health(psy_now - damage)
+end
+
+
 function actor_on_feeling_anomaly(obj, flags)
 	--dynamic anomaly detection
 	psy_env_state.anomaly_sense = obj and true or false
@@ -391,17 +447,27 @@ function mcm_reinitialization()
 		c_psy_health_cozy_campfire_regen = ( stress_mcm.get_config("campfire_regen" ) or 1.8 ) / 60000
 		safe_distance_to_campfire = ( stress_mcm.get_config("campfire_distance" ) or 4 ) ^2
 		telepatic_protection_overhaul = stress_mcm.get_config("telepatic_protection_overhaul" ) or false
-		c_psy_controller_damage_multiplier = ( stress_mcm.get_config("controller_damage_multiplier" ) or 40) / 100
+		c_psy_controller_damage_multiplier = ( stress_mcm.get_config("controller_damage_multiplier" ) or 50) / 100
+		c_psy_anomaly_damage_multiplier = math.max(( stress_mcm.get_config("psy_anomaly_damage" ) or 35 ) / 100, 0)
 		c_controller_damage_max_distance = ( stress_mcm.get_config("controller_damage_max_distance" ) or 50)
 		c_psy_hit_stress_multiplier = ( stress_mcm.get_config("hit_stress") or 22.4 ) / 100
 		c_psy_wound_stress_multiplier = ( stress_mcm.get_config("wounded_stress") or 112 ) / 600000
 		psy_regen_ratio = get_regen_ratio()
 		c_psy_stage_3_enabled = stress_mcm.get_config("phantoms_enabled" ) or false
 		phantom_style = stress_mcm.get_config("phantom_style") or "realistic"
-		c_psy_stage_1 = ( stress_mcm.get_config("stage_1") or 75 ) / 100
-		c_psy_stage_2 = ( stress_mcm.get_config("stage_2") or 50 ) / 100
-		c_psy_stage_phantoms = ( stress_mcm.get_config("stage_phantoms") or 25 ) / 100
-		c_psy_voices = ( stress_mcm.get_config("voices") or 70 ) / 100
+		c_psy_stage_1 = ( stress_mcm.get_config("stage_1") or 60 ) / 100
+		c_psy_stage_2 = ( stress_mcm.get_config("stage_2") or 40 ) / 100
+		c_psy_stage_phantoms = ( stress_mcm.get_config("stage_phantoms") or 30 ) / 100
+		c_psy_voices = ( stress_mcm.get_config("voices") or 50 ) / 100
+		local blur_strength = get_blur_strength()
+		if blur_strength ~= c_blur_strength then
+			c_blur_strength = blur_strength
+			--apply live when the blur is already on screen
+			local stage = psy_table and psy_table.current_stage
+			if db.actor and level.present() and (stage == c_stage_1 or stage == c_stage_2) then
+				add_psy_blur()
+			end
+		end
 		c_sound_zombified_volume_max = stress_mcm.get_config("voices_volume_max" ) or 40
 		c_sound_zombified_volume_min = stress_mcm.get_config("voices_volume_min" ) or 4
 		--config check-- c_psy_stage_2 shouldn't be highter than c_psy_stage_1
@@ -429,8 +495,8 @@ function mcm_reinitialization()
 	  hunger_stress_increase, thirst_stress_increase, sleepness_stress_increase)
 	printdbg("  cozy campfire      regen %f |",
 	  c_psy_health_cozy_campfire_regen)
-	printdbg("  stress effects     stage1 %.2f / stage2 %.2f / voices %.2f |",
-	  c_psy_stage_1, c_psy_stage_2, c_psy_voices)
+	printdbg("  stress effects     stage1 %.2f / stage2 %.2f / voices %.2f / blur %.2f |",
+	  c_psy_stage_1, c_psy_stage_2, c_psy_voices, c_blur_strength)
 	printdbg("  voices volume:     minimal %d / maximum %d |",
 	  c_sound_zombified_volume_min, c_sound_zombified_volume_max)
 	printdbg("  phantoms:          stage %.2f / max count %u |",
@@ -439,6 +505,7 @@ function mcm_reinitialization()
 	  zombfication_chance)
 	printdbg("  contoller:         damage modifier %.2f / max distance %u |",
 	  c_psy_controller_damage_multiplier, c_controller_damage_max_distance)
+	printdbg("  psy anomalies:     damage modifier %.2f |", c_psy_anomaly_damage_multiplier)
 end
 
 
@@ -586,19 +653,27 @@ function actor_on_before_hit(s_hit)
 	if PSY_DEBUG then printdbg_psy(true, "actor being hit. HIT POWER: %f HIT TYPE: %d", s_hit.power, s_hit.type) end
 	if (is_actor_zombied()) then
 		s_hit.power = 0
-		return 
+		return
 	end
-	
+
+	local draftsman = s_hit.draftsman
+	local anomaly_hit = is_psy_anomaly_source(draftsman)
+	if anomaly_hit and gamma_balancer_handles_anomaly_psy() then
+		--applied by G.A.M.M.A.'s Actor Damage Balancer (base G.A.M.M.A. damage x slider, see apply_gamma_anomaly_psy_hit);
+		--the hit power is left as it is so the balancer can read it, the balancer cancels the engine hit itself
+		return
+	end
+
 	local damage = s_hit.power
 	local total_damage = 0
 	local damage_multiplier = 1
 	if telepatic_protection_overhaul then damage_multiplier = 0.06 end
 
 	local psy_protection = get_telepatic_protection_total()
-	
+
 	--get controller psy damage
-	if (s_hit.draftsman and is_controller(s_hit.draftsman)) then
-		damage = get_controller_tube_damage(s_hit.draftsman:position(), s_hit.power)
+	if (draftsman and is_controller(draftsman)) then
+		damage = get_controller_tube_damage(draftsman:position(), s_hit.power)
 		damage_multiplier = c_psy_controller_damage_multiplier
 	end
 	
@@ -612,8 +687,10 @@ function actor_on_before_hit(s_hit)
 	end
 	if PSY_DEBUG then printdbg_psy(true, "pwr %f,prt %f,dmg %f", damage, psy_protection, total_damage) end
 	total_damage = clamp(total_damage, 0, s_hit.power)
-	
-	
+	--without the G.A.M.M.A. damage balancer, psy anomalies use the formula above scaled by the slider
+	if anomaly_hit then total_damage = total_damage * c_psy_anomaly_damage_multiplier end
+
+
 	set_psy_health(get_psy_health() - total_damage)
 	s_hit.power = 0
 end
@@ -676,7 +753,7 @@ function manage_ppe_effects()
 			if PSY_DEBUG then printdbg_psy(true, "STAGE 1: health %.2f, previous stage %d", psy_health, psy_table.current_stage) end
 			
 			remove_all_psy_ppe_effects()
-			level.add_pp_effector("blur.ppe", c_id_ppe_blur, true)
+			add_psy_blur()
 			psy_table.current_stage = c_stage_1
 		end
 	elseif (psy_health < c_psy_stage_2)  and psy_table.current_stage ~= c_stage_dead then
@@ -685,7 +762,7 @@ function manage_ppe_effects()
 			if PSY_DEBUG then printdbg_psy(true, "STAGE 0: health %.2f, previous stage %d", psy_health, psy_table.current_stage) end
 			
 			remove_all_psy_ppe_effects()
-			level.add_pp_effector("blur.ppe", c_id_ppe_blur, true)
+			add_psy_blur()
 			if not sound_mods_compatibility then level.add_pp_effector("snd_shock.ppe", c_id_ppe_audio_shock, true) end
 			psy_table.current_stage = c_stage_2
 		end
@@ -905,6 +982,15 @@ end
 
 function manage_psy_bar()
 	db.actor:cast_Actor():conditions():SetPsyBar(get_psy_health() or 0)
+end
+
+
+function add_psy_blur()
+	--(re)adds the stress blur at the MCM strength; 0 = no blur
+	level.remove_pp_effector(c_id_ppe_blur)
+	if c_blur_strength <= 0 then return end
+	level.add_pp_effector("blur.ppe", c_id_ppe_blur, true)
+	level.set_pp_effector_factor(c_id_ppe_blur, c_blur_strength)
 end
 
 

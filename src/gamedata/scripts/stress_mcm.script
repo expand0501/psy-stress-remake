@@ -32,9 +32,10 @@ local default = {
 	campfire_regen = 1.8,
 	campfire_distance = 15,
 
-	stage_1 = 75,
-	stage_2 = 50,
-	voices = 70,
+	stage_1 = 60,
+	stage_2 = 40,
+	blur_strength = 100,
+	voices = 50,
 
 	voices_volume_max = 40,
 	voices_volume_min = 4,
@@ -42,14 +43,15 @@ local default = {
 	phantoms_enabled = true,
 	phantom_style = "realistic",
 	max_phantoms = 3,
-	stage_phantoms = 25,
+	stage_phantoms = 30,
 
 	zombfication_enabled = true,
 	zombfication_chance = 50,
 
 	telepatic_protection_overhaul = true,
-	controller_damage_multiplier = 40,
+	controller_damage_multiplier = 50,
 	controller_damage_max_distance = 50,
+	psy_anomaly_damage = 35,
 }
 --]]
 
@@ -67,6 +69,17 @@ local preset_base = {
 -- text keys (recommended by MCM for presets): key = multiplier
 local damage_multipliers = { {"uneasy", 3}, {"tense", 5}, {"harsh", 8}, {"brutal", 10}, {"nightmare", 15} }
 local regen_multipliers = { {"steady", 1}, {"shaken", 0.7}, {"fragile", 0.3}, {"broken", 0.1} }
+-- preset values that don't follow the multiplier
+-- psy_anomaly_damage: % of base G.A.M.M.A. psy anomaly damage
+local preset_fixed = {
+	psy_damage_preset = {
+		uneasy    = { controller_damage_multiplier = 30,  psy_anomaly_damage = 10 },
+		tense     = { controller_damage_multiplier = 40,  psy_anomaly_damage = 20 },
+		harsh     = { controller_damage_multiplier = 50,  psy_anomaly_damage = 35 },
+		brutal    = { controller_damage_multiplier = 75,  psy_anomaly_damage = 45 },
+		nightmare = { controller_damage_multiplier = 100, psy_anomaly_damage = 70 },
+	},
+}
 
 local function round(x, prec)
 	local m = 10 ^ prec
@@ -75,10 +88,14 @@ end
 
 local function build_presets(preset_id, multipliers)
 	local presets = {}
+	local fixed = preset_fixed[preset_id] or {}
 	for _, entry in ipairs(multipliers) do
 		local values = {}
 		for key, data in pairs(preset_base[preset_id]) do
 			values[key] = round(data[1] * entry[2], data[2])
+		end
+		for key, value in pairs(fixed[entry[1]] or {}) do
+			values[key] = value
 		end
 		presets[entry[1]] = values
 	end
@@ -141,22 +158,24 @@ function on_mcm_load()
 		{ type = "line"},
 		--{ type = "title", text = "Stress Stages"},
 		{ id = "title_stressstages", type = "title" , text = "ui_mcm_menu_psy_stress_title_stressstages"},
-		{ id = "stage_1", type = "track", val = 2, min = 50, max = 90, step = 1, prec = 0, def = 75},
-		{ id = "stage_2", type = "track", val = 2, min = 25, max = 80, step = 1, prec = 0, def = 50},
-		{ id = "voices", type = "track", val = 2, min = 1, max = 100, step = 1, prec = 0, def = 70},
+		{ id = "stage_1", type = "track", val = 2, min = 50, max = 90, step = 1, prec = 0, def = 60},
+		{ id = "stage_2", type = "track", val = 2, min = 25, max = 80, step = 1, prec = 0, def = 40},
+		{ id = "blur_strength", type = "track", val = 2, min = 0, max = 100, step = 5, prec = 0, def = 100},
+		{ id = "voices", type = "track", val = 2, min = 1, max = 100, step = 1, prec = 0, def = 50},
 
 		{ id = "voices_volume_max", type = "track", val = 2, min = 0, max = 100, step = 5, prec = 0, def = 40},
 		{ id = "voices_volume_min", type = "track", val = 2, min = 0, max = 100, step = 1, prec = 0, def = 4},
 
 		{ id = "max_phantoms", type = "track", val = 2, min = 0, max = 9, step = 1, prec = 0, def = 3},
-		{ id = "stage_phantoms", type = "track", val = 2, min = 0, max = 100, step = 1, prec = 0, def = 25},
+		{ id = "stage_phantoms", type = "track", val = 2, min = 0, max = 100, step = 1, prec = 0, def = 30},
 		{ type = "line"},
 		--{ id = "additional_options", type = "title", text = "Addtional options"},
 		{ id = "title_additionaloptions", type = "title", text = "ui_mcm_menu_psy_stress_title_additionaloptions"},
 		{ id = "zombfication_chance", type = "track",  val = 2, min = 10, max = 100, step = 1, prec = 0, def = 50},
 
-		{ id = "controller_damage_multiplier", type = "track", val = 2, min = 25, max = 150, step = 1, prec = 0, def = 40},
+		{ id = "controller_damage_multiplier", type = "track", val = 2, min = 25, max = 150, step = 1, prec = 0, def = 50},
 		{ id = "controller_damage_max_distance", type = "track", val = 2, min = 25, max = 150, step = 1, prec = 0, def = 50},
+		{ id = "psy_anomaly_damage", type = "track", val = 2, min = 0, max = 500, step = 1, prec = 0, def = 35},
 		},
 	}
 	

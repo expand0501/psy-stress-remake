@@ -1,4 +1,4 @@
-**Psy Stress Remake by Expand 0.8.4**
+**Psy Stress Remake by Expand 0.8.7**
 
 Psy Stress remake for G.A.M.M.A. by Expand, based on Psy Stress / Stressfull Zone 1.06.04 by livvan
 (https://www.moddb.com/mods/stalker-anomaly/addons/psy-stress). Single version for S.T.A.L.K.E.R. Anomaly G.A.M.M.A.
@@ -18,7 +18,7 @@ Psy Stress remake for G.A.M.M.A. by Expand, based on Psy Stress / Stressfull Zon
 
 **Presets**
 Two drop-down lists at the top of MCM > Psy Stress Remake > General Configuration. Selecting a preset moves the sliders below it to the preset values (press Accept to apply); the sliders can be fine-tuned afterwards.
-- Psy damage preset: Uneasy (3x original), Tense (5x), Harsh (8x), Brutal (10x), Nightmare (15x). Sets basic psy drain, psy stress on receiving damage and psy stress from wounds. Psy attacks (controllers, psy fields) are not affected. Default: Harsh.
+- Psy damage preset: Uneasy (3x original), Tense (5x), Harsh (8x), Brutal (10x), Nightmare (15x). Sets basic psy drain, psy stress on receiving damage, psy stress from wounds, Controller psy damage (30% / 40% / 50% / 75% / 100%) and psy anomaly damage (10% / 20% / 35% / 45% / 70% of base G.A.M.M.A.). Default: Harsh.
 - Psy regeneration preset: Steady (1x, original, easiest), Shaken (0.7x), Fragile (0.3x), Broken (0.1x). Sets basic psy regeneration and campfire regeneration. Psy boosters (Psy-Block etc.), psy-protecting artefacts, sleep and surge cover recovery follow the basic regeneration slider. Anabiotic still restores psy health fully. Default: Steady.
 
 **Changes from the original**
@@ -43,6 +43,9 @@ Two drop-down lists at the top of MCM > Psy Stress Remake > General Configuratio
 - 0.8.2: fixed psy attacks (controllers, psy fields, phantom hits) sometimes doing double psy damage: the G.A.M.M.A. damage balancer and Psy Stress both subtracted psy health for the same hit, depending on callback order. Psy hits now skip the balancer's psy subtraction; its heartbeat sound and screen effect stay.
 - 0.8.3: stability and cleanup - a save made during the psy death scene no longer leaves input disabled or NPCs ignoring the player; psy health functions are safe when another mod calls them before the player exists; no global variables left in the scripts.
 - 0.8.4: mod renamed from PsyStressOverhaulByExpand to Psy Stress Remake: MCM tab "Psy Stress Remake" (Russian: "Ремейк пси-стресса"), zip name, log lines "[Psy Stress Remake]". Gameplay unchanged; MCM settings keep their IDs, so your settings are kept.
+- 0.8.5: test build, not released (changes are listed under 0.8.6).
+- 0.8.6: the psy damage preset now also sets Controller psy damage (Uneasy 30%, Tense 40%, Harsh 50%, Brutal 75%, Nightmare 100%; default was 40%). New "Psy anomaly damage" slider: psy anomalies deal a % of the base G.A.M.M.A. psy anomaly damage (calculated by G.A.M.M.A.'s Actor Damage Balancer with its psy protection), set by the preset from 10% (Uneasy) over 20% / 35% (Harsh, default) / 45% to 70% (Nightmare). Covers psy fields, other psy anomalies and the psy aura of Dynamic Anomalies Overhaul / Arrival (new psy_stress_dao_patch.script; the aura's direct psy damage no longer bypasses Psy Stress). Russian MCM tab name: "Пси-стресс ремейк". Saved MCM values are kept: pick the psy damage preset again (and Accept) to get the new values.
+- 0.8.7: new Stress Stages defaults - first stage (blur) at 60% psy health (was 75%), second stage at 40% (was 50%), voices at 50% (was 70%), phantoms at 30% (was 25%). New "Screen blur strength" slider (0-100%, default 100% = as before; applies live). Stage descriptions in MCM now say what each stage really does. Saved MCM values are kept: set the sliders by hand to get the new defaults.
 
 **Requirements**
 - MCM 1.7.1 or newer for presets that move the sliders (GAMMA ships MCM by RavenAscendant).

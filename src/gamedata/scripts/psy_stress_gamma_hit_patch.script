@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- Psy Stress Remake by Expand 0.8.4 - G.A.M.M.A. hit stress patch
+-- Psy Stress Remake by Expand 0.8.7 - G.A.M.M.A. hit stress patch
 --
 -- Problem: G.A.M.M.A. Actor Damage Balancer (grok_actor_damage_balancer.script)
 -- handles every physical hit on the player itself in actor_on_before_hit:
@@ -17,9 +17,20 @@
 -- handle psy hits itself. Psy Stress does handle them (arszi_psy.actor_on_before_hit),
 -- so depending on callback order a psy attack was applied twice. Psy hits now
 -- skip the balancer's psy subtraction; its heartbeat sound and screen effect stay.
+--
+-- Third change (0.8.6): psy anomaly hits (psy fields) do go through the
+-- balancer's psy calculation, so they deal base GAMMA damage; Psy Stress then
+-- scales it with the "Psy anomaly damage" MCM slider
+-- (arszi_psy.apply_gamma_anomaly_psy_hit).
 --------------------------------------------------------------------------------
 
 local patched = false
+local booster_patched = false
+
+-- true when psy anomaly hits are applied through the balancer (read by arszi_psy.actor_on_before_hit)
+function handles_anomaly_psy()
+	return booster_patched
+end
 
 local function psy_stress_present()
 	-- Psy Stress defines mcm_reinitialization and actor_on_hit_callback;
@@ -54,13 +65,19 @@ local function apply_patch()
 
 	local base_booster = grok_actor_damage_balancer.shit_booster
 	if type(base_booster) == "function" then
+		local anomaly_psy = type(arszi_psy.is_psy_anomaly_hit) == "function" and type(arszi_psy.apply_gamma_anomaly_psy_hit) == "function"
 		grok_actor_damage_balancer.shit_booster = function(shit, ...)
 			if shit and shit.type == hit.telepatic then
-				return  -- psy damage is applied by Psy Stress (arszi_psy.actor_on_before_hit)
+				if anomaly_psy and arszi_psy.is_psy_anomaly_hit(shit) then
+					-- psy anomalies: base GAMMA damage from the balancer, scaled by Psy Stress (MCM slider)
+					return arszi_psy.apply_gamma_anomaly_psy_hit(base_booster, shit, ...)
+				end
+				return  -- other psy damage is applied by Psy Stress (arszi_psy.actor_on_before_hit)
 			end
 			return base_booster(shit, ...)
 		end
-		printf("[psy_stress_gamma_hit_patch] psy hits: GAMMA damage balancer psy subtraction disabled (applied by Psy Stress)")
+		booster_patched = anomaly_psy
+		printf("[psy_stress_gamma_hit_patch] psy hits: GAMMA damage balancer psy subtraction disabled (applied by Psy Stress), psy anomalies use GAMMA damage x MCM slider")
 	end
 
 	patched = true

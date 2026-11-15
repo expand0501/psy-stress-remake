@@ -1,0 +1,74 @@
+--------------------------------------------------------------------------------
+-- Psy Stress Remake by Expand 0.8.7 - Dynamic Anomalies Overhaul / Arrival psy aura patch
+--
+-- Dynamic Anomalies Overhaul (DAO, base G.A.M.M.A.: anomaly "zone_mine_radar")
+-- and Arrival (same anomaly as "zone_mine_cdf", Cognitive Dissonance Field)
+-- give one psy anomaly a scripted psy aura around it. Each aura tick:
+--   1. hits the actor with a psy hit whose source is the actor itself, so
+--      the hit can't be told apart from other psy sources by its source;
+--   2. subtracts psy health directly from DAO's own copy of the psy table,
+--      which bypasses Psy Stress and goes stale after loading another save.
+--
+-- Fix: the aura function is wrapped to mark the aura as active for a moment,
+-- so the delayed psy hit (1) is treated as a psy anomaly hit, and DAO's
+-- change_psy_health (2) is sent to Psy Stress. Both are then scaled by the
+-- "Psy anomaly damage" MCM slider like every other psy anomaly.
+-- Without DAO / Arrival this script does nothing.
+--------------------------------------------------------------------------------
+
+local aura_sections = { "zone_mine_radar", "zone_mine_cdf" }
+local c_aura_window_ms = 300    -- the engine applies script hits a frame or more later
+local aura_until = 0
+local patched = false
+
+-- true for a short time after a DAO / Arrival psy aura ticked (read by arszi_psy)
+function is_aura_active()
+	return time_global() < aura_until
+end
+
+local function wrap_aura(funcs, sec)
+	local base = funcs[sec]
+	if type(base) ~= "function" then return false end
+	funcs[sec] = function(...)
+		aura_until = time_global() + c_aura_window_ms
+		return base(...)
+	end
+	return true
+end
+
+local function apply_patch()
+	if patched then return end
+	patched = true  -- one attempt per game session; the DAO tables don't appear later
+
+	local dao = drx_da_main
+	local funcs = dao and dao.anomalies_near_actor_functions
+	if type(funcs) ~= "table" then return end  -- DAO / Arrival not installed
+
+	if not (arszi_psy and arszi_psy.change_psy_health_anomaly and arszi_psy.mcm_reinitialization) then
+		printf("[psy_stress_dao_patch] Psy Stress arszi_psy not active (check MO2 order) - patch not applied")
+		return
+	end
+
+	local wrapped = 0
+	for i = 1, #aura_sections do
+		if wrap_aura(funcs, aura_sections[i]) then wrapped = wrapped + 1 end
+	end
+	if wrapped == 0 then
+		printf("[psy_stress_dao_patch] no DAO psy aura found - patch not applied")
+		return
+	end
+
+	-- DAO's change_psy_health is only used by the psy aura. It is replaced, not chained:
+	-- the original writes to DAO's own (possibly stale) psy table and can't be scaled.
+	if type(dao.change_psy_health) == "function" then
+		dao.change_psy_health = function(amount)
+			arszi_psy.change_psy_health_anomaly(amount)
+		end
+	end
+
+	printf("[psy_stress_dao_patch] DAO / Arrival psy aura follows the Psy Stress psy anomaly damage slider")
+end
+
+function on_game_start()
+	RegisterScriptCallback("actor_on_first_update", apply_patch)
+end
