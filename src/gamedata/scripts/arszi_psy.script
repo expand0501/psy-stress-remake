@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
---Psy Stress Remake by Expand 0.8.7 - based on STRESSFULL ZONE v1.06.04 by livvan-
+--Psy Stress Remake by Expand 1.0.0 - based on STRESSFULL ZONE v1.06.04 by livvan-
 
 --PPE SETTINGS------------------------------------------------------------------
 local sound_mods_compatibility = stress_mcm.get_config("sound_mods_compatibility") ~= false    --remove some sound effects for sound/voice mods compatibility
@@ -50,10 +50,12 @@ local zombfication_chance = ( stress_mcm.get_config("zombfication_chance") or 50
 local fate_of_player_zombfication = false
 
 --PSY-HEALTH REGEN AT CAMPFIRES-------------------------------------------------
-local c_psy_health_cozy_campfire_enabled = stress_mcm.get_config("cozy_campfire_enabled" ) or false
+--MCM "campfire_psy_mode": "stress" = a lit campfire lowers stress (campfire_stress_reduction),
+--"regen" = a lit campfire regenerates psy health (campfire_regen); only one of them is active
+local c_psy_health_cozy_campfire_enabled = ( stress_mcm.get_config("campfire_psy_mode") == "regen" )
   if c_psy_health_cozy_campfire_enabled then campfire_stress_reduction = 0 end                       --config check-- disable state modifier if separate regeneration is enabled
 local c_psy_health_cozy_campfire_regen = ( stress_mcm.get_config("campfire_regen" ) or 1.8 ) / 60000  --psy health regeneration bonus for campfire bonus
-local safe_distance_to_campfire = ( stress_mcm.get_config("campfire_distance" ) or 4 ) ^2            --distance at which to apply campfire regen bonus
+local safe_distance_to_campfire = ( stress_mcm.get_config("campfire_distance" ) or 15 ) ^2           --distance at which to apply campfire regen bonus
 
 --PSY-DAMAGE--------------------------------------------------------------------
 local telepatic_protection_overhaul = stress_mcm.get_config("telepatic_protection_overhaul" ) or false             --psy protection works as a % reduction for psy damage instat of flat subtraction.
@@ -443,9 +445,9 @@ function mcm_reinitialization()
 		zombfication_enabled = stress_mcm.get_config("zombfication_enabled") or false
 		zombfication_chance = ( stress_mcm.get_config("zombfication_chance") or 50 ) / 100
 		max_phantoms = stress_mcm.get_config("max_phantoms") or 3
-		c_psy_health_cozy_campfire_enabled = stress_mcm.get_config("cozy_campfire_enabled" ) or false
+		c_psy_health_cozy_campfire_enabled = ( stress_mcm.get_config("campfire_psy_mode") == "regen" )
 		c_psy_health_cozy_campfire_regen = ( stress_mcm.get_config("campfire_regen" ) or 1.8 ) / 60000
-		safe_distance_to_campfire = ( stress_mcm.get_config("campfire_distance" ) or 4 ) ^2
+		safe_distance_to_campfire = ( stress_mcm.get_config("campfire_distance" ) or 15 ) ^2
 		telepatic_protection_overhaul = stress_mcm.get_config("telepatic_protection_overhaul" ) or false
 		c_psy_controller_damage_multiplier = ( stress_mcm.get_config("controller_damage_multiplier" ) or 50) / 100
 		c_psy_anomaly_damage_multiplier = math.max(( stress_mcm.get_config("psy_anomaly_damage" ) or 35 ) / 100, 0)
@@ -479,7 +481,7 @@ function mcm_reinitialization()
 	
 	printdbg("psy stress config updated")
 	printdbg("effective current config:")
-	printdbg("  gameplay mode:     damage overhaul %s / cozy campfire %s / phantoms %s / zombifiction %s / sound mods %s / psy debug %s |",
+	printdbg("  gameplay mode:     damage overhaul %s / campfire regen mode %s / phantoms %s / zombifiction %s / sound mods %s / psy debug %s |",
 	  tostring(telepatic_protection_overhaul), tostring(c_psy_health_cozy_campfire_enabled), tostring(c_psy_stage_3_enabled), tostring(zombfication_enabled),
 	  tostring(sound_mods_compatibility), tostring(PSY_DEBUG))
 	printdbg("  general config:    psy regen %f / psy drain %f / hit stress %f / wound stress %f |",
@@ -493,7 +495,7 @@ function mcm_reinitialization()
 	  surge_stress_increase, ungerground_stress_increase, azone_close_stress_increase, anomaly_sense_stress_increase, combat_stress_increase, nighttime_stress_increase)
 	printdbg("    increse          hunger %.2f / thirst %.2f / sleepness %.2f |",
 	  hunger_stress_increase, thirst_stress_increase, sleepness_stress_increase)
-	printdbg("  cozy campfire      regen %f |",
+	printdbg("  campfire regen     %f |",
 	  c_psy_health_cozy_campfire_regen)
 	printdbg("  stress effects     stage1 %.2f / stage2 %.2f / voices %.2f / blur %.2f |",
 	  c_psy_stage_1, c_psy_stage_2, c_psy_voices, c_blur_strength)
@@ -1061,14 +1063,14 @@ function get_psy_wound_stress()
 end	
 
 
---equivalent to CozyCampfires mod by Voland33
+--"Campfires regenerate psy health" mode (idea from Cozy Campfires by Voland33)
 local function find_lit_campfire(dist)
 	local campfire = bind_campfire.get_nearby_campfire(dist, true)
 	return (campfire and campfire:is_on()) and true or false
 end
 
 function get_nearby_lit_campfire_bonus(dist)
-	if not c_psy_health_cozy_campfire_enabled then return 0 end  --optimization: no campfire search when Cozy Campfires is off
+	if not c_psy_health_cozy_campfire_enabled then return 0 end  --optimization: no campfire search when the regen mode is off
 	--uses the cached result of the once-per-second environment check (same distance), otherwise searches directly
 	local lit
 	if dist == safe_distance_to_campfire then lit = env_cache.campfire_lit else lit = find_lit_campfire(dist) end

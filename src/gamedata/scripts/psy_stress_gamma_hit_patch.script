@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- Psy Stress Remake by Expand 0.8.7 - G.A.M.M.A. hit stress patch
+-- Psy Stress Remake by Expand 1.0.0 - G.A.M.M.A. hit stress patch
 --
 -- Problem: G.A.M.M.A. Actor Damage Balancer (grok_actor_damage_balancer.script)
 -- handles every physical hit on the player itself in actor_on_before_hit:

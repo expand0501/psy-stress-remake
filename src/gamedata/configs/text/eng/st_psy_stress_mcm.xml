@@ -6,19 +6,32 @@
 	</string>
 
 	<string id="ui_mcm_psy_stress_author_info">
-		<text>Psy Stress Remake 0.8.7 - made by Expand. Based on Psy Stress 1.06.04 by livvan.</text>
+		<text>Psy Stress Remake 1.0.0 - made by Expand. Based on Psy Stress 1.06.04 by livvan.</text>
 	</string>
 	
 	<string id="ui_mcm_menu_psy_stress_title_gameplay">
 		<text>Gameplay Modes</text>
 	</string>
 	
-	<string id="ui_mcm_psy_stress_cozy_campfire_enabled">
-		<text>Use Cozy Campfires by Voland33</text>
+	<string id="ui_mcm_psy_stress_campfire_psy_mode">
+		<text>Campfire psy effect</text>
 	</string>
-	<string id="ui_mcm_psy_stress_cozy_campfire_enabled_desc">
-		<text>\n
-		Uses 'Campfire psy regeneration' instead of 'Campfire stress reduction'.</text>
+	<string id="ui_mcm_psy_stress_campfire_psy_mode_desc">
+		<text>
+
+		How standing near a lit campfire affects psy health.
+
+		Campfires reduce stress: psy drain is lowered by 'Campfire stress reduction'.
+
+		Campfires regenerate psy health: psy health goes up by 'Campfire psy regeneration' (also set by the psy regeneration preset), normal drain still applies.
+
+		D.O.G.M.A.'s campfire psy healing is turned off so it doesn't add to this. Its body and limb healing still work.</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_campfire_stress">
+		<text>Campfires reduce stress</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_campfire_regen">
+		<text>Campfires regenerate psy health</text>
 	</string>
 	
 	<string id="ui_mcm_psy_stress_phantoms_enabled">
@@ -213,7 +226,7 @@
 	</string>
 	<string id="ui_mcm_psy_stress_campfire_stress_reduction_desc">
 		<text>\n
-		Psy drain recovery from being around a burning campfire. NOT applied if 'Use Cozy Campfires by Voland33' is enabled.\n
+		Psy drain recovery from being around a burning campfire. Only used when 'Campfire psy effect' is 'Campfires reduce stress'.\n
 		Calculation of the resulting value: (100 - X)%.\n
 		A negative value would mean psy health recovery. For example (100-125)% = -25%, 25% of psy drain will be recovering.</text>
 	</string>
@@ -295,7 +308,7 @@
 	</string>
 	<string id="ui_mcm_psy_stress_campfire_regen_desc">
 		<text>\n
-		Psy regeneration from being near a campfire gets applied if Cozy Campfires by Voland33 is enabled. Disables 'Campfire stress reduction'.</text>
+		Psy regeneration near a burning campfire. Only used when 'Campfire psy effect' is 'Campfires regenerate psy health'. Also set by the psy regeneration preset.</text>
 	</string>
 	
 	<string id="ui_mcm_menu_psy_stress_title_stressstages">

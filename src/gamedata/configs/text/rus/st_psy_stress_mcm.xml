@@ -5,19 +5,32 @@
 	</string>
 	
 	<string id="ui_mcm_psy_stress_author_info">
-		<text>Psy Stress Remake 0.8.7 - автор: Expand. Основано на Psy Stress 1.06.04 от livvan.</text>
+		<text>Psy Stress Remake 1.0.0 - автор: Expand. Основано на Psy Stress 1.06.04 от livvan.</text>
 	</string>
 	
 	<string id="ui_mcm_menu_psy_stress_title_gameplay">
 		<text>Режим игры</text>
 	</string>
 	
-	<string id="ui_mcm_psy_stress_cozy_campfire_enabled">
-		<text>Использовать Cozy Campfires от Voland33</text>
+	<string id="ui_mcm_psy_stress_campfire_psy_mode">
+		<text>Влияние костра на пси-здоровье</text>
 	</string>
-	<string id="ui_mcm_psy_stress_cozy_campfire_enabled_desc">
-		<text>\n
-		Вместо 'Снижение стресса у костра' используется 'Регенерация пси-здоровья у костра'.</text>
+	<string id="ui_mcm_psy_stress_campfire_psy_mode_desc">
+		<text>
+
+		Как горящий костёр рядом влияет на пси-здоровье.
+
+		Костры снижают стресс: потеря пси-здоровья уменьшается на 'Снижение стресса у костра'.
+
+		Костры восстанавливают пси-здоровье: пси-здоровье растёт на 'Регенерация пси-здоровья у костра' (её также задаёт пресет регенерации), обычная потеря продолжается.
+
+		Пси-лечение у костра из D.O.G.M.A. отключено, чтобы не складываться с этим. Лечение тела и конечностей из D.O.G.M.A. работает.</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_campfire_stress">
+		<text>Костры снижают стресс</text>
+	</string>
+	<string id="ui_mcm_lst_psy_stress_campfire_regen">
+		<text>Костры восстанавливают пси-здоровье</text>
 	</string>
 	
 	<string id="ui_mcm_psy_stress_phantoms_enabled">
@@ -214,7 +227,7 @@
 	</string>
 	<string id="ui_mcm_psy_stress_campfire_stress_reduction_desc">
 		<text>\n
-		Снижение стресса рядом с горящим костром. Не применяется, если включена опция 'Использовать Cozy Campfires от Voland33'.\n
+		Снижение стресса рядом с горящим костром. Работает, только если 'Влияние костра на пси-здоровье' = 'Костры снижают стресс'.\n
 		Рассчитывается по формуле (100 - X)%.\n
 		При отрицательном значении пси-здоровье будет восстанавливаться. Например: (100-125)% = -25%, 25% от базового пси-стресса будет восстанавливаться.</text>
 	</string>
@@ -298,7 +311,7 @@
 	<string id="ui_mcm_psy_stress_campfire_regen_desc">
 		<text>\n
 		Регенерация пси-здоровья рядом с горящим костром.\n
-		Применяется, если включена опция 'Использовать Cozy Campfires от Voland33'. Отключает 'Снижение стресса у костра'.</text>
+		Работает, только если 'Влияние костра на пси-здоровье' = 'Костры восстанавливают пси-здоровье'. Также задаётся пресетом регенерации.</text>
 	</string>
 	
 	<string id="ui_mcm_menu_psy_stress_title_stressstages">

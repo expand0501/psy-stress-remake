@@ -1,0 +1,40 @@
+--------------------------------------------------------------------------------
+-- Psy Stress Remake by Expand 1.0.0 - D.O.G.M.A. Campfire Healing patch
+--
+-- D.O.G.M.A.'s Campfire Healing heals body, limbs and psy health near a lit
+-- campfire. Its psy part (actor:change_psy_health) only raises the engine value,
+-- which Psy Stress overwrites on its next update, so it never really healed but
+-- could still make the psy bar twitch and showed D.O.G.M.A.'s orange healing tint.
+--
+-- Fix: D.O.G.M.A. reads its "psy heal per second" setting as 0, so campfires
+-- affect psy health only through Psy Stress ("Campfire psy effect" in MCM).
+-- D.O.G.M.A.'s body and limb healing are not changed.
+-- Without D.O.G.M.A. this script does nothing.
+--------------------------------------------------------------------------------
+
+local c_heal_mod_id = "dogma/game/campfire_healing"
+local patched = false
+
+local function apply_patch()
+	if patched then return end
+	local dmcm = __dogma_mcm  -- D.O.G.M.A.'s settings reader (dogma.mcm)
+	if type(dmcm) ~= "table" or type(dmcm.float) ~= "function" then return end  -- D.O.G.M.A. not installed
+	patched = true
+
+	local base_float = dmcm.float
+	dmcm.float = function(mod_id, key, ...)
+		if key == "psy_pct" and mod_id == c_heal_mod_id then
+			return 0
+		end
+		return base_float(mod_id, key, ...)
+	end
+	printf("[psy_stress_dogma_patch] D.O.G.M.A. Campfire Healing psy heal turned off, campfire psy effect comes from Psy Stress")
+end
+
+-- axr_main loads every script before it calls any on_game_start, so patching at load
+-- comes before D.O.G.M.A. reads its settings (in its own on_game_start).
+apply_patch()
+
+function on_game_start()
+	apply_patch()
+end

@@ -1,6 +1,6 @@
 {
   "name": "Psy Stress Remake",
-  "version": "0.8.7",
+  "version": "1.0.0",
   "zip": "Psy_Stress_Remake_by_Expand_{version}",
   "zipLegacy": ["PsyStressOverhaulByExpand_{version}", "Psy Stress Overhaul by Expand {version}", "Psy Stress Remake by Expand {version}"],
   "versionFiles": [
@@ -8,6 +8,7 @@
     "src/gamedata/scripts/arszi_psy.script",
     "src/gamedata/scripts/psy_stress_gamma_hit_patch.script",
     "src/gamedata/scripts/psy_stress_dao_patch.script",
+    "src/gamedata/scripts/psy_stress_dogma_patch.script",
     "src/gamedata/configs/text/eng/st_psy_stress_mcm.xml",
     "src/gamedata/configs/text/rus/st_psy_stress_mcm.xml"
   ]

@@ -11,6 +11,7 @@ Shipped readme: `src/readme.md` (full feature list, presets, version history, in
 - `src/gamedata/scripts/psy_stress_dao_patch.script`: DAO / Arrival psy aura follows the psy anomaly slider.
 - `src/gamedata/scripts/psy_stress_gamma_hit_patch.script`: forwards real damage from GAMMA's Actor Damage
   Balancer to Psy Stress; makes psy hits skip the balancer's own psy subtraction.
+- `src/gamedata/scripts/psy_stress_dogma_patch.script`: turns off D.O.G.M.A. Campfire Healing's psy heal.
 - `src/gamedata/scripts/stress_mcm.script`: MCM menu (tab "Psy Stress Remake" / "Пси-стресс ремейк").
 - `src/gamedata/configs/text/{eng,rus}/st_psy_stress_mcm.xml`: strings (rus = Windows-1251).
 
@@ -38,11 +39,18 @@ history), header line of both scripts, author line (`ui_mcm_psy_stress_author_in
 - "Phantom appearance": realistic mutants (default, via xcvb's phantoms mod) or classic phantoms; all phantoms
   follow the Psy Stress threshold; xcvb's own spawning is turned off.
 - Author credit "Expand" at the top of the MCM page.
+- Campfire psy effect: MCM list `campfire_psy_mode` = stress (default, slider `campfire_stress_reduction`) / regen
+  (slider `campfire_regen`, set by the regen preset); it replaced the checkbox `cozy_campfire_enabled` ("Use Cozy
+  Campfires by Voland33", a built-in mode, not a compatibility option; saved value not migrated).
+- D.O.G.M.A. Campfire Healing must not touch psy: `psy_stress_dogma_patch.script` wraps `__dogma_mcm.float` so
+  `dogma/game/campfire_healing` `psy_pct` reads 0 (patched at script load, before D.O.G.M.A.'s on_game_start reads it).
+  Body/limb healing untouched. Same in D.O.G.M.A. 0.6.5 and DOGMA_Russian_by_Expand 0.6.5.2.
 
 ## Check in game
 After loading a save the log should contain:
 `hit stress forwarded from GAMMA damage balancer to Psy Stress`; with DAO or Arrival also
-`DAO / Arrival psy aura follows the Psy Stress psy anomaly damage slider`.
+`DAO / Arrival psy aura follows the Psy Stress psy anomaly damage slider`; with D.O.G.M.A. also
+`[psy_stress_dogma_patch] D.O.G.M.A. Campfire Healing psy heal turned off`.
 
 ## Open items
 - Planned: post on a mod page with English and Russian descriptions in Discord markdown.

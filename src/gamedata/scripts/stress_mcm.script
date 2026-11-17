@@ -28,7 +28,7 @@ local default = {
 	thirst_stress_increase = 10,
 	sleepness_stress_increase = 10,
 
-	cozy_campfire_enabled = false,
+	campfire_psy_mode = "stress",
 	campfire_regen = 1.8,
 	campfire_distance = 15,
 
@@ -118,7 +118,7 @@ function on_mcm_load()
 		--{ id = "gameplay_modes" type = "title", text = "Gameplay modes"},
 		{ id = "title_gameplay", type = "title", text = "ui_mcm_menu_psy_stress_title_gameplay"},
 		{ id = "telepatic_protection_overhaul", type = "check", val = 1, def = true},
-		{ id = "cozy_campfire_enabled", type = "check", val = 1, def = false},
+		{ id = "campfire_psy_mode", type = "list", val = 0, def = "stress", content = { {"stress", "psy_stress_campfire_stress"}, {"regen", "psy_stress_campfire_regen"} } },
 		{ id = "phantoms_enabled", type = "check", val = 1, def = true},
 		{ id = "phantom_style", type = "list", val = 0, def = "realistic", content = { {"classic", "psy_stress_phantoms_classic"}, {"realistic", "psy_stress_phantoms_realistic"} } },
 		{ id = "zombfication_enabled", type = "track", type = "check", val = 1, def = true},

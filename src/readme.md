@@ -1,4 +1,4 @@
-**Psy Stress Remake by Expand 0.8.7**
+**Psy Stress Remake by Expand 1.0.0**
 
 Psy Stress remake for G.A.M.M.A. by Expand, based on Psy Stress / Stressfull Zone 1.06.04 by livvan
 (https://www.moddb.com/mods/stalker-anomaly/addons/psy-stress). Single version for S.T.A.L.K.E.R. Anomaly G.A.M.M.A.
@@ -10,6 +10,13 @@ Psy Stress remake for G.A.M.M.A. by Expand, based on Psy Stress / Stressfull Zon
 - Psy-health recovery: natural regeneration while calm, sleep, items with a psy booster (Psy-Block and similar), psy-protecting artefacts, anabiotic (full restore).
 - Psy damage from psy fields and controllers, low-psy effects (blur, sound shock, voices, phantoms), death or zombification at zero psy health.
 - Everything configurable in MCM (Psy Stress Remake tab).
+
+**Campfires**
+- MCM > Psy Stress Remake > Gameplay Modes > Campfire psy effect:
+  - Campfires reduce stress (default): near a lit campfire psy drain is lowered by "Campfire stress reduction" (default 75%).
+  - Campfires regenerate psy health: near a lit campfire psy health goes up by "Campfire psy regeneration" (% per 10 in-game minutes, also set by the psy regeneration preset); normal drain still applies.
+- Range: "Campfire calming distance" (default 15 m).
+- D.O.G.M.A.: its Campfire Healing no longer heals psy (its psy slider is ignored), so campfire psy works only through Psy Stress. D.O.G.M.A.'s body and limb healing still work.
 
 **Phantoms**
 - MCM > Psy Stress Remake > Gameplay Modes > Phantom appearance: Realistic mutants (default) or Classic phantoms.
@@ -46,6 +53,9 @@ Two drop-down lists at the top of MCM > Psy Stress Remake > General Configuratio
 - 0.8.5: test build, not released (changes are listed under 0.8.6).
 - 0.8.6: the psy damage preset now also sets Controller psy damage (Uneasy 30%, Tense 40%, Harsh 50%, Brutal 75%, Nightmare 100%; default was 40%). New "Psy anomaly damage" slider: psy anomalies deal a % of the base G.A.M.M.A. psy anomaly damage (calculated by G.A.M.M.A.'s Actor Damage Balancer with its psy protection), set by the preset from 10% (Uneasy) over 20% / 35% (Harsh, default) / 45% to 70% (Nightmare). Covers psy fields, other psy anomalies and the psy aura of Dynamic Anomalies Overhaul / Arrival (new psy_stress_dao_patch.script; the aura's direct psy damage no longer bypasses Psy Stress). Russian MCM tab name: "Пси-стресс ремейк". Saved MCM values are kept: pick the psy damage preset again (and Accept) to get the new values.
 - 0.8.7: new Stress Stages defaults - first stage (blur) at 60% psy health (was 75%), second stage at 40% (was 50%), voices at 50% (was 70%), phantoms at 30% (was 25%). New "Screen blur strength" slider (0-100%, default 100% = as before; applies live). Stage descriptions in MCM now say what each stage really does. Saved MCM values are kept: set the sliders by hand to get the new defaults.
+- 0.8.8: test build, not released (changes are listed under 1.0.0).
+- 0.8.9: test build, not released (changes are listed under 1.0.0).
+- 1.0.0: first stable release. campfire psy effect is now a choice in MCM (Gameplay Modes > Campfire psy effect): "Campfires reduce stress" (default, as before; "Campfire stress reduction" slider, default 75%) or "Campfires regenerate psy health" ("Campfire psy regeneration" slider, set by the psy regeneration preset). It replaces the "Use Cozy Campfires by Voland33" checkbox, which was this same built-in regen mode and not a compatibility option: if you had it on, pick the regen mode again. D.O.G.M.A. compatibility: D.O.G.M.A.'s Campfire Healing no longer heals psy (new psy_stress_dogma_patch.script; Psy Stress already cancelled it, but the psy bar could twitch and D.O.G.M.A.'s orange tint showed); its body and limb healing still work. Without MCM the campfire distance is now 15 m like the MCM default (was 4 m).
 
 **Requirements**
 - MCM 1.7.1 or newer for presets that move the sliders (GAMMA ships MCM by RavenAscendant).

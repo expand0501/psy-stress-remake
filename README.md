@@ -17,6 +17,8 @@ The Zone wears on your mind. Psy health slowly drains from stress, and you have 
 - Low psy health brings blur, sound shock, voices and phantoms; at zero you die or become zombified.
 - Phantoms: realistic mutants (with "Phantoms at low psy health" + "Maybelline's Restore XCV phantoms", both in
   G.A.M.M.A.) or classic phantoms.
+- Campfires in MCM: either reduce stress or regenerate psy health, both configurable. D.O.G.M.A.'s campfire psy
+  healing is turned off so it doesn't interfere (its body and limb healing still work).
 - Presets in MCM for psy damage (Uneasy 3x … Nightmare 15x) and psy regeneration (Steady 1x … Broken 0.1x).
 - G.A.M.M.A. fix: being shot or bitten causes psy stress again (GAMMA's damage balancer used to hide those hits).
 - Changes no item stats.
