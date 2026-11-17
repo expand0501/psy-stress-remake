@@ -53,4 +53,4 @@ After loading a save the log should contain:
 `[psy_stress_dogma_patch] D.O.G.M.A. Campfire Healing psy heal turned off`.
 
 ## Open items
-- Planned: post on a mod page with English and Russian descriptions in Discord markdown.
+- Discord descriptions (eng/rus, rules: skill `gamma-discord-description`): `docs/discord_en.md`, `docs/discord_ru.md` (1.0.0).
