@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
---Psy Stress Remake by Expand 1.0.0 - based on STRESSFULL ZONE v1.06.04 by livvan-
+--Psy Stress Remake by Expand 1.0.2 - based on STRESSFULL ZONE v1.06.04 by livvan-
 
 --PPE SETTINGS------------------------------------------------------------------
 local sound_mods_compatibility = stress_mcm.get_config("sound_mods_compatibility") ~= false    --remove some sound effects for sound/voice mods compatibility
@@ -871,6 +871,18 @@ function take_over_xcv_phantoms()
 end
 
 
+--psy health above this ends a running psy death scene; below it the scene goes on
+--(a small gradual restore, e.g. a cigarette, doesn't make the scene start and stop)
+local c_psy_scene_recovery = 0.05
+
+local function end_psy_death_scene()
+	psy_table.psy_death_scene = nil
+	arszi_zombification_time_counter = 0
+	level.enable_input()
+	remove_all_psy_ppe_effects()
+end
+
+
 function manage_zombification()
 	--Original community is restored on load game, because "zombied" is not allowed in "gameplay_diguise"
 	if (psy_table.actor_zombied and db.actor:character_community() ~= "actor_zombied") then
@@ -887,31 +899,51 @@ function manage_zombification()
 		end
 	end
 	
-	if (get_psy_health() <= 0) then
-		--Death or Zombification
-		if (psy_table.current_stage ~= c_stage_dead) then
-			if PSY_DEBUG then printdbg_psy(true, "ENTER TERMINAL STAGE 8") end
-			
-			remove_all_psy_ppe_effects()
-			level.add_pp_effector("black_infinite.ppe", c_id_ppe_black_infinite, true)
-			psy_table.psy_death_scene = true
-			level.disable_input()
-			psy_table.current_stage = c_stage_dead
-			fate_of_player_zombfication = zombfication_enabled and (math.random() <= zombfication_chance) or false
-		end
+	local psy_health = get_psy_health()
 
+	if psy_table.psy_death_scene then
+		if (psy_health > c_psy_scene_recovery) then
+			--something restored psy health during the scene (revive mod, medicine): the player survives
+			end_psy_death_scene()
+			if sound_psy_zombified:playing() then sound_psy_zombified:stop() end
+			if sound_psy_death_scene:playing() then sound_psy_death_scene:stop() end
+			psy_table.current_stage = c_stage_default
+			printf("[Psy Stress Remake] psy death scene ended, psy health was restored")
+			return
+		end
+	elseif (psy_table.current_stage == c_stage_dead) and (psy_health > 0) then
+		--the scene is over and the player lived: stages and the next psy death work again
+		psy_table.current_stage = c_stage_default
+	end
+
+	--Death or Zombification
+	if (psy_health <= 0) and (psy_table.current_stage ~= c_stage_dead) then
+		if PSY_DEBUG then printdbg_psy(true, "ENTER TERMINAL STAGE 8") end
+
+		remove_all_psy_ppe_effects()
+		level.add_pp_effector("black_infinite.ppe", c_id_ppe_black_infinite, true)
+		psy_table.psy_death_scene = true
+		level.disable_input()
+		psy_table.current_stage = c_stage_dead
+		arszi_zombification_time_counter = 0
+		fate_of_player_zombfication = zombfication_enabled and (math.random() <= zombfication_chance) or false
+
+		if fate_of_player_zombfication then
+			sound_psy_zombified:play(db.actor, 0, sound_object.s2d)
+			sound_psy_zombified.volume = c_sound_psy_death_scene_volume
+		else
+			sound_psy_death_scene:play(db.actor, 0, sound_object.s2d)
+			sound_psy_death_scene.volume = c_sound_psy_death_scene_volume
+		end
+	end
+
+	if psy_table.psy_death_scene then
 		arszi_zombification_time_counter = arszi_zombification_time_counter + 1
-		if (arszi_zombification_time_counter == 1) then
-			if fate_of_player_zombfication then
-				sound_psy_zombified:play(db.actor, 0, sound_object.s2d)
-				sound_psy_zombified.volume = c_sound_psy_death_scene_volume
-			else
-				sound_psy_death_scene:play(db.actor, 0, sound_object.s2d)
-				sound_psy_death_scene.volume = c_sound_psy_death_scene_volume
-			end
-		end
 
-		if (arszi_zombification_time_counter == 25) then
+		if (arszi_zombification_time_counter >= 25) then
+			--before the kill: a revive mod may take over input inside its death callback
+			end_psy_death_scene()
+
 			if fate_of_player_zombfication then
 				if PSY_DEBUG then printdbg_psy(true, "zombification triggred") end
 				
@@ -930,12 +962,8 @@ function manage_zombification()
 				if (not level_environment.is_actor_immune()) then
 					db.actor:kill(db.actor)
 				end
-				remove_all_psy_ppe_effects()
 				printui(game.translate_string("st_psy_death_scene"))
 			end
-
-			level.enable_input()
-			psy_table.psy_death_scene = nil
 		end
 	end
 end
@@ -1221,11 +1249,18 @@ function update_psy_env_state()
 	end
 	
 	--fast checks: every tick
-	psy_env_state.surface = not GetEvent("underground")
-	psy_env_state.surge = psy_env_state.surface and ( GetEvent("surge", "state") or GetEvent("psi_storm", "state") )
+	--the "underground" event alone is not enough: New Safe Zones and Dynamic Emission Cover (base G.A.M.M.A.) also set it while
+	--the player is sheltered on the surface during an emission or psi-storm
+	local underground_event = GetEvent("underground")
+	local underground_level = level_weathers and level_weathers.bLevelUnderground
+	if underground_level == nil then underground_level = underground_event end
+	local surge_active = GetEvent("surge", "state") or GetEvent("psi_storm", "state")
+	
+	psy_env_state.surface = not underground_level
+	psy_env_state.surge = psy_env_state.surface and surge_active
 	psy_env_state.in_combat = is_in_action()
 	psy_env_state.safe_camp = not psy_env_state.in_combat and psy_env_state.surface and env_cache.in_safe_base
-	psy_env_state.surge_cover = psy_env_state.surface and GetEvent("current_safe_cover")
+	psy_env_state.surge_cover = psy_env_state.surface and (GetEvent("current_safe_cover") or (surge_active and underground_event))
 	psy_env_state.campfire = is_near_campfire()
 	
 	--this code runs every second, so condition for loggins checked only once, instead of seprate checks for each line

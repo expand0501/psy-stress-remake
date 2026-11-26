@@ -1,4 +1,4 @@
-**Psy Stress Remake by Expand 1.0.0**
+**Psy Stress Remake by Expand 1.0.2**
 
 Psy Stress remake for G.A.M.M.A. by Expand, based on Psy Stress / Stressfull Zone 1.06.04 by livvan
 (https://www.moddb.com/mods/stalker-anomaly/addons/psy-stress). Single version for S.T.A.L.K.E.R. Anomaly G.A.M.M.A.
@@ -56,6 +56,8 @@ Two drop-down lists at the top of MCM > Psy Stress Remake > General Configuratio
 - 0.8.8: test build, not released (changes are listed under 1.0.0).
 - 0.8.9: test build, not released (changes are listed under 1.0.0).
 - 1.0.0: first stable release. campfire psy effect is now a choice in MCM (Gameplay Modes > Campfire psy effect): "Campfires reduce stress" (default, as before; "Campfire stress reduction" slider, default 75%) or "Campfires regenerate psy health" ("Campfire psy regeneration" slider, set by the psy regeneration preset). It replaces the "Use Cozy Campfires by Voland33" checkbox, which was this same built-in regen mode and not a compatibility option: if you had it on, pick the regen mode again. D.O.G.M.A. compatibility: D.O.G.M.A.'s Campfire Healing no longer heals psy (new psy_stress_dogma_patch.script; Psy Stress already cancelled it, but the psy bar could twitch and D.O.G.M.A.'s orange tint showed); its body and limb healing still work. Without MCM the campfire distance is now 15 m like the MCM default (was 4 m).
+- 1.0.1: fixed two cases where the psy death scene never ended (black screen, no input, NPCs ignoring the player): psy health restored above 0 while the scene runs, and a second psy death in the same session after one that did not kill (god mode, Marked by the Zone, a revive mod). Psy health above 5% now ends the scene and the player survives; a small gradual restore (a cigarette) does not interrupt it. Input is given back before the death, so revive mods can take over.
+- 1.0.2: fixed cover not calming during emissions and psi-storms. New Safe Zones and Dynamic Emission Cover (both in G.A.M.M.A.) report a sheltered player as "underground"; Psy Stress took that as a real underground level, skipped the cover and camp stress reduction and added the underground stress. Underground is now read from the level; shelter found by those two mods counts as emission cover too. While sheltered, the emission stress still applies, the cover reduction outweighs it.
 
 **Requirements**
 - MCM 1.7.1 or newer for presets that move the sliders (GAMMA ships MCM by RavenAscendant).
